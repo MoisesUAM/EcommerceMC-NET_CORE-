@@ -1,4 +1,6 @@
-﻿@{
+﻿@using BootstrapIcons.AspNetCore
+
+@{
     ViewData["Title"] = "Administracion de Almacenes";
 }
 
@@ -7,13 +9,37 @@
         <div class="col-12">
             <h2 class="text-center text-info fw-bold">@ViewData["Title"]</h2>
         </div>
-        <div class="card border-primary">
-            <div class="row">
-                <div class="col-12">
-                    <p class="card-text text-center">Esto es una card de bootstrap</p>
-                </div>
-                <hr class="text-danger" />
+    </div>
+</div>
+<hr class="text-danger" />
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-6">
+            <h3 class="text-center text-primary">Lista de Almacenes</h3>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+            <div class="d-grid gap-2 col-8 mx-auto">
+                <a asp-action="Upsert" class="btn btn-outline-primary"><i class="bi bi-shop"></i> Agregar Almacen</a>
             </div>
         </div>
     </div>
+    <br />
+    <div class="row">
+        <div class="border p-4 rounded bg-light">
+            <table id="tblStores" class="table table-responsive table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripcion</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/StoreFunctions.js" ></script>
+}

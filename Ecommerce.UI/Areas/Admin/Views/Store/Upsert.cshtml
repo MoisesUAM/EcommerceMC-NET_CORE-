@@ -1,0 +1,30 @@
+﻿@model StoreModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Administracion de Almacenes";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center text-info fw-bold">@ViewData["Title"]</h2>
+        </div>
+    </div>
+</div>
+<hr class="text-danger" />
+
+<div class="container">
+    @if (Model.IdStore == 0)
+    {
+        <partial name="Partials/_CreateStore" model="Model" />
+    }
+    else
+    {
+        <partial name="Partials/_UpdateStore" model="Model" />
+    }
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
