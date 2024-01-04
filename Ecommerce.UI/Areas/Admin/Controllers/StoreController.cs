@@ -2,8 +2,6 @@
 using Ecommerce.BLL.Utilities.Interfaces;
 using Ecommerce.Models.Catalog;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel;
-using System.Diagnostics;
 
 namespace Ecommerce.UI.Areas.Admin.Controllers
 {

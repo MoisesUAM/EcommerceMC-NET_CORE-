@@ -10,6 +10,7 @@ namespace Ecommerce.DAL.Data
         public ApplicationDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions) { }
 
         public DbSet<StoreModel> Stores { get; set; }
+        public DbSet<CategoryModel> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

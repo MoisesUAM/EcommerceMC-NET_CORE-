@@ -10,11 +10,13 @@ namespace Ecommerce.BLL.Utilities.Implementations
         private readonly ApplicationDbContext _dbContext;
 
         public IStoreRepository StoreRepository {  get; private set; }
+        public ICategoryRepository CategoryRepository { get; private set; }
 
         public UnitWorkImpl(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
             StoreRepository = new StoreRepositoryImpl(_dbContext);
+            CategoryRepository = new CategoryRepositoryImpl(_dbContext);
         }
 
         public void Dispose()

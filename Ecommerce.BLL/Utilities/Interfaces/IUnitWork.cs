@@ -10,6 +10,7 @@ namespace Ecommerce.BLL.Utilities.Interfaces
     public interface IUnitWork: IDisposable
     {
         IStoreRepository StoreRepository { get; }
+        ICategoryRepository CategoryRepository { get; }
 
         Task Save();
     }
