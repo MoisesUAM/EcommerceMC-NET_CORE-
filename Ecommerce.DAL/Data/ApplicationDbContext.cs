@@ -11,6 +11,7 @@ namespace Ecommerce.DAL.Data
 
         public DbSet<StoreModel> Stores { get; set; }
         public DbSet<CategoryModel> Categories { get; set; }
+        public DbSet<BrandModel> Brands { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

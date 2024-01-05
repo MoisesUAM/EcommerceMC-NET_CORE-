@@ -1,7 +1,7 @@
-﻿@model CategoryModel
+﻿@model BrandModel
 
 @{
-    ViewData["Subtitle"] = "Actualizar Categoria";
+    ViewData["Subtitle"] = "Actualizar Marca";
 }
 
 <div class="container">
@@ -14,15 +14,15 @@
                 </div>
                 <div class="card-body">
                     <form method="post">
-                        <input type="hidden" asp-for="IdCategory" />
+                        <input type="hidden" asp-for="IdBrand" />
                         <div class="form-floating mb-3">
-                            <input type="text" id="Name" asp-for="Name" class="form-control" placeholder="Nombre de Categoria" />
-                            <label for="Name">Nombre de Categoria</label>
+                            <input type="text" id="Name" asp-for="Name" class="form-control" placeholder="Nombre de Marca" />
+                            <label for="Name">Nombre de Marca</label>
                             <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" id="Descripcion" asp-for="Description" class="form-control" placeholder="Descripcion de la Categoria" />
-                            <label for="Descripcion">Descripcion Categoria</label>
+                            <input type="text" id="Descripcion" asp-for="Description" class="form-control" placeholder="Descripcion de la Marca" />
+                            <label for="Descripcion">Descripcion Marca</label>
                             <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
