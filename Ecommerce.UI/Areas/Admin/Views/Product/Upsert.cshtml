@@ -1,0 +1,31 @@
+﻿@using Ecommerce.Models.ViewModels
+@model Ecommerce.Models.ViewModels.ProductViewModel
+
+@{
+    ViewData["Title"] = "Administracion de Productos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center text-info fw-bold">@ViewData["Title"]</h2>
+        </div>
+    </div>
+</div>
+<hr class="text-danger" />
+<div class="container">
+    @if (Model.Product!.IdProduct == 0)
+    {
+        <partial name="Partials/_CreateProduct" model="Model" />
+    }
+    else
+    {
+        <partial name="Partials/_UpdateProduct" model="Model" />
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

@@ -1,0 +1,125 @@
+﻿@model Ecommerce.Models.ViewModels.ProductViewModel
+@using Ecommerce.BLL.Notifications
+@{
+    ViewData["Subtitle"] = "Crear Producto";
+}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-6 mb-3" s>
+                <div class="card">
+                    <div class="card-header">
+                        @ViewData["Subtitle"]
+                    </div>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <hr class="text-danger" />
+                            <div class="form-floating mb-3">
+                                <input type="text" id="SerialNumber"  class="form-control" asp-for="Product!.SerialNumber" placeholder="Numero de Serie" />
+                                <label for="SerialNumber">Numero de Serie</label>
+                                <span asp-validation-for="Product!.SerialNumber" class="text-danger"></span>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" id="Descripcion" class="form-control" asp-for="Product!.Description" placeholder="Descripcion de Producto" />
+                                <label for="Descripcion">Descripcion de Producto</label>
+                                <span asp-validation-for="Product!.Description" class="text-danger"></span>
+                            </div>
+                        <div class="mb-3">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="Price">Precio de Venta</label>
+                                    <input type="number" class="form-control" asp-for="Product!.Price" id="Price" />
+                                    <span asp-validation-for="Product!.Price" class="text-danger"></span>
+                                </div>
+                                <div class="col-6">
+                                    <label for="Price">Precio de Costo</label>
+                                    <input type="number" class="form-control" asp-for="Product!.CostPrice" id="Price" />
+                                    <span asp-validation-for="Product!.CostPrice" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                            <hr class="text-danger" />
+                        <div class="mb-3">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="d-flex justify-content-around">
+                                        <div>
+                                            <select class="form-select" asp-for="Product!.IdCategory" asp-items="@Model.CategorySelectItemList">
+                                                <option class="text-center text-primary" disabled selected>--Categoria--</option>
+                                            </select>
+                                            <span asp-validation-for="Product!.IdCategory" class="text-danger"></span>
+                                        </div>
+                                        <div>
+                                            <select class="form-select" asp-for="Product!.IdBrand" asp-items="@Model.BrandSelectItemList">
+                                                <option class="text-center text-primary" disabled selected>--Marca--</option>
+                                            </select>
+                                            <span asp-validation-for="Product!.IdBrand" class="text-danger"></span>
+                                        </div>
+                                        <div>
+                                            <div class="form-check form-switch">
+                                                <input asp-for="Product!.Estate" class="form-check-input" type="checkbox" id="Estate">
+                                                <label class="form-check-label" for="Estate">Estado</label>
+                                                <span asp-validation-for="Product!.Estate" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            <hr class="text-danger" />
+                        <div class="mb-3">
+                            <label class="form-label text-info"> *(Opcional) agregue este producto a un kit</label>
+                            <select class="form-select" asp-for="Product!.MasterId" asp-items="@Model.ProductSelectItemList">
+                                <option class="text-center text-primary" disabled selected>--Kit Combo--</option>
+                            </select>
+                            <span asp-validation-for="Product!.IdBrand" class="text-danger"></span>
+                        </div>
+                            <hr class="text-danger" />
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <input title="Seleccione una imagen" type="file" accept="image/png, image/gif, image/jpeg" class="form-control" id="imagenId" name="files" required>
+                            </div>
+                        </div>
+                            <hr class="text-danger" />
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-around">
+                                    <button style="min-width:150px;" type="submit" onclick="return checkImage()" class="btn btn-outline-info"><i class="bi bi-upc-scan"></i> Crear</button>
+                                    <a style="min-width:150px;" class="btn btn-outline-dark" role="button" asp-action="Index"><i class="bi bi-arrow-return-left"></i> Regresar</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+            <div class="card" style="min-height:535px; max-height:535px; overflow:hidden;">
+                    <img id="imagePreview" src="~/images/products/no-image.png" class="img-fluid" style="min-height:530px; max-height:535px;object-fit:fill;">
+            </div>
+        </div>
+        </div>
+    </div>
+    <script>
+
+        function checkImage() {
+            let imageInput = document.getElementById('imagenId');
+            if (imageInput.value == "") {
+                Swal.fire({
+                    title: "Alerta",
+                    html:`<h3 class="text-center text-info">No ha seleccionado
+                    una imagen para el producto nuevo!</h3>` ,
+                    icon: "error",
+                    confirmButtonColor: "#d33",
+                    confirmButtonText: "Ir al seleccionar imagen"
+                });
+            }
+        }
+
+        document.getElementById('imagenId').addEventListener('change', function (e) {
+            var file = e.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('imagePreview').src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        });
+    </script>
