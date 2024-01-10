@@ -1,4 +1,6 @@
-﻿let productTbl;
+﻿
+
+let productTbl;
 
 $(document).ready(function () {
     loadBrandTable();

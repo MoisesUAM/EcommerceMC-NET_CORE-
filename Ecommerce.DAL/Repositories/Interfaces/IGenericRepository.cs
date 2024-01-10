@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Ecommerce.Models.PaginationSpecs;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ecommerce.DAL.Repositories.Interfaces
 {
@@ -16,6 +12,15 @@ namespace Ecommerce.DAL.Repositories.Interfaces
             string? includedProperties = null,
             bool isTracking = true
             );
+
+        PaginatedList<T> GetAllPaginatedItems(
+            PageParameters parameters,
+            Expression<Func<T, bool>>? filter = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+            string? includedProperties = null,
+            bool isTracking = true
+          );
+
         Task<T> GetFirst(
             Expression<Func<T, bool>>? filter = null,
             string? includedProperties = null,

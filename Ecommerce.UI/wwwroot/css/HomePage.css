@@ -1,0 +1,12 @@
+﻿.details-hidden {
+    display: none;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.9s, transform 0.9s;
+}
+
+a:hover .details-hidden {
+    opacity: 1;
+    display:inline-block;
+    transform: translateX(0);
+}

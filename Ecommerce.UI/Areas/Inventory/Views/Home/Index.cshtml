@@ -1,12 +1,91 @@
-﻿@{
+﻿@model Ecommerce.Models.PaginationSpecs.PaginatedList<ProductModel>
+@using Ecommerce.BLL.Notifications
+
+@{
     ViewData["Title"] = "Principal";
 }
 
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <h1 class="text-center text-info fw-bold">Bienvenido</h1>
-            <h2 class="text-center text-primary fw-bold">Aplicacion con Net Core 8 y EntityFrameWork</h2>
+<div class="header">
+    <div class="container pt-sm-5">
+        <div class="heading-primary">
+            Los Mejores productos & <br />
+            Marcas en Nuestra Tienda Online!
         </div>
     </div>
 </div>
+<hr class="text-danger" />
+<div class="container my-2">
+    <div class="row">
+        <div class="d-flex col-sm-12 col-md-6 col-lg-6">
+            <div class="mb-3 d-flex justify-content-around">
+                <label class="form-label text-primary" style="min-width:120px;">Item por Pagina</label>
+                <select asp-for="@ViewData["ItemsPerPage"]" id="itemPerPage" class="form-select" aria-label="Default select example" style="min-width:68px;">
+                    <option value="4">4</option>
+                    <option value="8">8</option>
+                    <option value="16">16</option>
+                    <option value="24">24</option>
+                    <option value="32">32</option>
+                    <option value="40">40</option>
+                </select>
+            </div>
+            <form asp-action="Index" method="get">
+                <div class="input-group mb-3 ms-4">
+                    <input type="text" name="_search" class="form-control" placeholder="Buscar.." aria-label="Buscar" aria-describedby="button-addon2" value="@ViewData["CurrentSearch"]" />
+                    <button type="submit" class="btn btn-outline-primary"><i class="bi bi-search"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<section id="productsContainer">
+    <div class="container my-2">
+        <div class="row">
+            @foreach (var product in Model)
+            {
+                <div class="d-flex col-lg-3 col-md-6 col-sm-6">
+                    <div class="card w-100 my-2">
+                        <img src="@DS.ImagesRootPaht@product.ImageUrl" class="card-img-top" alt="..." style="aspect-ratio: 1/1;">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fs-6">@product.Description</h5>
+                            <p class="card-text text-success">$ @String.Format("{0:#,##0.00}", product.Price)</p>
+                            <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto bg-white">
+                                <div class="container">
+                                    <a href="#" class="btn btn-outline-primary"><i class="bi bi-bookmarks"></i><span class="details-hidden">Detalles</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <hr class="text-danger" />
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-md-4 col-lg-4">
+                    <div class="d-flex justify-content-between">
+                        <div class="m-1">
+                            <a asp-action="Index" asp-route-itemsPerPage="@ViewData["ItemsPerPage"]" asp-route-pageNumber="@(1)" asp-route-currentSearch="@ViewData["CurrentSearch"]" class="btn btn-sm btn-outline-primary @ViewData["FirtsPage"]"><i class="bi bi-skip-start-fill"></i></a>
+                        </div>
+                        <div class="m-1">
+                            <a asp-action="Index" asp-route-itemsPerPage="@ViewData["ItemsPerPage"]" asp-route-pageNumber="@((int)ViewData["PageNumber"]!-1)" asp-route-currentSearch="@ViewData["CurrentSearch"]" class="btn btn-sm btn-outline-primary @ViewData["Previous"]">Anterior</a>
+                        </div>
+                        <div class="m-1">
+                            <span class="text-primary">Pagina @ViewData["PageNumber"] de @ViewData["TotalPages"]</span>
+                        </div>
+                        <div class="m-1">
+                            <a asp-action="Index" asp-route-itemsPerPage="@ViewData["ItemsPerPage"]" asp-route-pageNumber="@((int)ViewData["PageNumber"]!+1)" asp-route-currentSearch="@ViewData["CurrentSearch"]" class="btn btn-sm btn-outline-primary @ViewData["Next"]">Siguiente</a>
+                        </div>
+                        <div class="m-1">
+                            <a asp-action="Index" asp-route-itemsPerPage="@ViewData["ItemsPerPage"]" asp-route-pageNumber="@ViewData["TotalPages"]" asp-route-currentSearch="@ViewData["CurrentSearch"]" class="btn btn-sm btn-outline-primary @ViewData["LastPage"]"><i class="bi bi-skip-end-fill"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts {
+    <script src="~/js/MainViewFunctions.js"></script>
+}
