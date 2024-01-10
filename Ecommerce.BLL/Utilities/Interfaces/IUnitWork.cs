@@ -8,6 +8,7 @@ namespace Ecommerce.BLL.Utilities.Interfaces
         ICategoryRepository CategoryRepository { get; }
         IBrandRepository BrandRepository { get; }
         IProductRepository ProductRepository { get; }
+        IUserModelRepository UserModelRepository { get; }
 
         Task Save();
     }
