@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿
+using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -25,5 +26,8 @@ namespace Ecommerce.Models.Catalog
         [Required(ErrorMessage = "El pais de residencia es requerido")]
         [MaxLength(100)]
         public string? Country { get; set; }
+
+        [NotMapped]
+        public string Role {  get; set; }    
     }
 }

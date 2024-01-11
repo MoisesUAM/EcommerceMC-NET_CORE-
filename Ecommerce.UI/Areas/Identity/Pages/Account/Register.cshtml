@@ -1,0 +1,116 @@
+﻿@page
+@model RegisterModel
+@using Ecommerce.BLL.Notifications
+@{
+    ViewData["Title"] = "Registro Usuario Nuevo";
+}
+
+<hr class="text-danger" />
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-1 col-lg-1"></div>
+        <div class="col-sm-12 col-md-6 col-lg-10">
+            <div class="card">
+                <div class="card-title">
+                    <h3 class="text-center text-primary">@ViewData["Title"]</h3>
+                </div>
+                <div class="card-body">
+                    <hr class="text-danger" />
+                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6 col-lg-6">
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Input.Name" class="form-control" aria-required="true" placeholder="Nombres completos" />
+                                        <label class="text-secondary fw-bolder" asp-for="Input.Name">Nombre</label>
+                                        <span asp-validation-for="Input.Name" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Input.LastName" class="form-control" aria-required="true" placeholder="Apellidos" />
+                                        <label class="text-secondary fw-bolder" asp-for="Input.LastName">Apellidos</label>
+                                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Input.Address" class="form-control" aria-required="true" placeholder="Direccion" />
+                                        <label class="text-secondary fw-bolder" asp-for="Input.Address">Direccion</label>
+                                        <span asp-validation-for="Input.Address" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Input.City" class="form-control" aria-required="true" placeholder="Ciudad/Provincia" />
+                                        <label class="text-secondary fw-bolder" asp-for="Input.City">Ciudad/Provincia</label>
+                                        <span asp-validation-for="Input.City" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Input.Country" class="form-control" aria-required="true" placeholder="Pais de Residencia" />
+                                        <label class="text-secondary fw-bolder" asp-for="Input.Country">Pais de Residencia</label>
+                                        <span asp-validation-for="Input.Country" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-6">
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" placeholder="Telefono" />
+                                        <label class="text-secondary fw-bolder" asp-for="Input.PhoneNumber">Telefono/Movil</label>
+                                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                                        <label class="text-secondary fw-bolder" asp-for="Input.Email">Email</label>
+                                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                                        <label class="text-secondary" asp-for="Input.Password">Password</label>
+                                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-floating mb-1">
+                                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                                        <label class="text-secondary" asp-for="Input.ConfirmPassword">Confirm Password</label>
+                                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                                    </div>
+                                    <div class="card-text text-center text-info">Asignacion de Roles</div>
+                                    <div class="container-sm">
+                                        <div class="input-group mt-2 gap-3">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input"  type="checkbox" role="switch" id="AdminRole">
+                                                <label class="form-check-label" for="flexSwitchCheckDefault">Administrador</label>
+                                            </div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input"  type="checkbox" role="switch" id="ClientRole">
+                                                <label class="form-check-label" for="flexSwitchCheckDefault">Cliente</label>
+                                            </div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input"  type="checkbox" role="switch" id="EmployeetRole">
+                                                <label class="form-check-label" for="flexSwitchCheckDefault">Empleado</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="text-danger" />
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-2 col-lg-2"></div>
+                                <div class="col-sm-12 col-md-8 col-lg-8">
+                                    <div class="d-flex justify-content-around gap-3">
+                                        <button id="registerSubmit" type="submit" class="btn btn-primary w-50"><i class="bi bi-person-fill-add"></i> Registrar</button>
+                                        <button id="registerSubmit" type="reset" class="btn btn-dark w-50"><i class="bi bi-eraser-fill"></i> Resetar</button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-2 col-lg-2"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-1 col-lg-1"></div>
+    </div>
+</div>
+<hr class="text-danger" />
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
