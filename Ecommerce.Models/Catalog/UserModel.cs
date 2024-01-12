@@ -28,6 +28,6 @@ namespace Ecommerce.Models.Catalog
         public string? Country { get; set; }
 
         [NotMapped]
-        public string Role {  get; set; }    
+        public List<string>? Roles {  get; set; }    
     }
 }

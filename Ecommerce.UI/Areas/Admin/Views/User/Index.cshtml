@@ -1,5 +1,7 @@
-﻿@{
-    ViewData["Title"] = "Administracion de Almacenes";
+﻿@model UserModel
+
+@{
+    ViewData["Title"] = "Administracion de Usuarios";
 }
 
 <div class="container">
@@ -17,20 +19,22 @@
         </div>
         <div class="col-sm-12 col-md-6 col-lg-6">
             <div class="d-grid gap-2 col-8 mx-auto">
-                <a asp-action="Upsert" class="btn btn-outline-primary"><i class="bi bi-shop"></i> Agregar Almacen</a>
+                <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-outline-primary"><i class="bi bi-person-fill-add fs-5"></i> Agregar Usuario</a>
             </div>
         </div>
     </div>
     <br />
     <div class="row">
         <div class="border p-4 rounded bg-light">
-            <table id="tblStores" class="table table-responsive table-hover">
+            <table id="tblUsers" class="table table-responsive table-hover">
                 <thead class="table-dark">
                     <tr>
-                        <th>Nombre</th>
-                        <th>Descripcion</th>
-                        <th>Estado</th>
-                        <th></th>
+                        <th>Email/UserName</th>
+                        <th class="text-center">Nombre</th>
+                        <th class="text-center">Apellidos</th>
+                        <th class="text-center">Telefono</th>
+                        <th class="text-center">Roles</th>
+                        <th class="text-center">Estado</th>
                     </tr>
                 </thead>
             </table>
@@ -39,5 +43,5 @@
 </div>
 
 @section Scripts {
-    <script src="~/js/StoreFunctions.js" ></script>
+    <script src="~/js/UsersFunctions.js"></script>
 }

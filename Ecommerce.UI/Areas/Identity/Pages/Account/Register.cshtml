@@ -68,23 +68,17 @@
                                         <label class="text-secondary" asp-for="Input.ConfirmPassword">Confirm Password</label>
                                         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                                     </div>
-                                    <div class="card-text text-center text-info">Asignacion de Roles</div>
-                                    <div class="container-sm">
-                                        <div class="input-group mt-2 gap-3">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input"  type="checkbox" role="switch" id="AdminRole">
-                                                <label class="form-check-label" for="flexSwitchCheckDefault">Administrador</label>
-                                            </div>
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input"  type="checkbox" role="switch" id="ClientRole">
-                                                <label class="form-check-label" for="flexSwitchCheckDefault">Cliente</label>
-                                            </div>
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input"  type="checkbox" role="switch" id="EmployeetRole">
-                                                <label class="form-check-label" for="flexSwitchCheckDefault">Empleado</label>
+                                    @if (User.IsInRole(DS.AdminRole))
+                                    {
+                                        <div class="card-text text-center text-info">Asignacion de Roles</div>
+                                        <div id="RolesInput" class="container-sm">
+                                            <div class="form-group mt-2 gap-1">
+                                                <select id="multiselectRoles" multiple="multiple" asp-for="Input.SelectedRoles" asp-items="@Model.Input.SelectListItemsRoles" class="form-select">
+                                                    <option id="firtsSelect" selected disabled class="text-center">-Seleccione el o lo Roles-</option>
+                                                </select>
                                             </div>
                                         </div>
-                                    </div>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -95,7 +89,11 @@
                                 <div class="col-sm-12 col-md-8 col-lg-8">
                                     <div class="d-flex justify-content-around gap-3">
                                         <button id="registerSubmit" type="submit" class="btn btn-primary w-50"><i class="bi bi-person-fill-add"></i> Registrar</button>
-                                        <button id="registerSubmit" type="reset" class="btn btn-dark w-50"><i class="bi bi-eraser-fill"></i> Resetar</button>
+                                        <button id="resetBtn" type="reset" class="btn btn-dark w-50"><i class="bi bi-eraser-fill"></i> Resetar</button>
+                                        @if (User.IsInRole(DS.AdminRole))
+                                        {
+                                            <a role="button" asp-area="Admin" asp-controller="User" asp-action="Index" class="btn btn-info w-50"><i class="bi bi-box-arrow-left"></i> Regresar</a>
+                                        }
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-2 col-lg-2"></div>
@@ -113,4 +111,6 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript" src="~/js/BsMultiSelect.js"></script>
+    <script type="text/javascript" src="~/js/registerFunctions.js"></script>
 }

@@ -72,12 +72,12 @@ namespace Ecommerce.UI.Areas.Admin.Controllers
                         //este caso es para un nuevo producto
                         string upload = webRootPath + DS.ImagesRootPaht;
                         string fileName = Guid.NewGuid().ToString();
-                        string extensiion = Path.GetExtension(files[0].FileName);
-                        using (var fileStream = new FileStream(Path.Combine(upload, fileName + extensiion), FileMode.Create))
+                        string extension = Path.GetExtension(files[0].FileName);
+                        using (var fileStream = new FileStream(Path.Combine(upload, fileName + extension), FileMode.Create))
                         {
                             files[0].CopyTo(fileStream);
                         }
-                        productViewModel.Product.ImageUrl = fileName + extensiion;
+                        productViewModel.Product.ImageUrl = fileName + extension;
                         await _UnitWork.ProductRepository.Add(productViewModel.Product);
                         TempData[DS.Success] = "Producto creado correctamente";
                         await _UnitWork.Save();
@@ -92,7 +92,7 @@ namespace Ecommerce.UI.Areas.Admin.Controllers
                         {
                             string upload = webRootPath + DS.ImagesRootPaht;
                             string fileName = Guid.NewGuid().ToString();
-                            string extensiion = Path.GetExtension(files[0].FileName);
+                            string extension = Path.GetExtension(files[0].FileName);
 
                             //Se debe borrar del directorio raiz la imagen anterior
 #pragma warning disable CS8604 // Possible null reference argument.
@@ -102,12 +102,12 @@ namespace Ecommerce.UI.Areas.Admin.Controllers
                             {
                                 System.IO.File.Delete(oldFile);
                             }
-                            using (var fileStream = new FileStream(Path.Combine(upload, fileName + extensiion), FileMode.Create))
+                            using (var fileStream = new FileStream(Path.Combine(upload, fileName + extension), FileMode.Create))
                             {
                                 files[0].CopyTo(fileStream);
                             }
                             // se actualiza el path de la imagen nueva
-                            productViewModel.Product.ImageUrl = fileName + extensiion;
+                            productViewModel.Product.ImageUrl = fileName + extension;
                         }
                         else
                         {

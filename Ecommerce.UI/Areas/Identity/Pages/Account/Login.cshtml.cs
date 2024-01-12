@@ -128,7 +128,7 @@ namespace Ecommerce.UI.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Credenciales incorrectas o Cuenta no confirmada");
                     return Page();
                 }
             }

@@ -4,12 +4,15 @@
 
 using System.ComponentModel.DataAnnotations;
 using Ecommerce.BLL.Notifications;
+using Ecommerce.DAL.Data;
 using Ecommerce.Models.Catalog;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.UI.Areas.Identity.Pages.Account
 {
@@ -22,6 +25,8 @@ namespace Ecommerce.UI.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ApplicationDbContext _dbContext;
+        
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -29,7 +34,9 @@ namespace Ecommerce.UI.Areas.Identity.Pages.Account
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            ApplicationDbContext dbContext
+            )
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -38,6 +45,8 @@ namespace Ecommerce.UI.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _roleManager = roleManager;
+            _dbContext = dbContext;
+           // SelectListRoles = GetAllRoles();
         }
 
         /// <summary>
@@ -65,6 +74,7 @@ namespace Ecommerce.UI.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
+       
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -99,24 +109,33 @@ namespace Ecommerce.UI.Areas.Identity.Pages.Account
             public string Address { get; set; }
             public string City { get; set; }
             public string Country { get; set; }
-            public string Role { get; set; }
+            public List<string> SelectedRoles { get; set; }
+            public IEnumerable<SelectListItem> SelectListItemsRoles { get; set; }
+
+
         }
 
 
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
+            Input = new InputModel()
+            {
+                SelectListItemsRoles = GetAllRoles()
+            };
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null )
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
                 // var user = CreateUser();
+                
 
+                Console.WriteLine(Input.SelectedRoles);
 
                 var user = new UserModel
                 {
@@ -128,7 +147,7 @@ namespace Ecommerce.UI.Areas.Identity.Pages.Account
                     PhoneNumber = Input.PhoneNumber,
                     Email = Input.Email,
                     UserName = Input.Email,
-                    Role = DS.AdminRole
+                    Roles = (Input.SelectedRoles != null) ? Input.SelectedRoles.ToList() : null
                 };
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
@@ -139,7 +158,7 @@ namespace Ecommerce.UI.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    if(!await _roleManager.RoleExistsAsync(DS.AdminRole))
+                    if (!await _roleManager.RoleExistsAsync(DS.AdminRole))
                     {
                         await _roleManager.CreateAsync(new IdentityRole(DS.AdminRole));
                     }
@@ -152,7 +171,17 @@ namespace Ecommerce.UI.Areas.Identity.Pages.Account
                         await _roleManager.CreateAsync(new IdentityRole(DS.EmployeeRole));
                     }
 
-                    await _userManager.AddToRoleAsync(user, DS.AdminRole);
+                   if(user.Roles != null && User.IsInRole(DS.AdminRole))
+                    {
+                        foreach (var RoleName in user.Roles)
+                        {
+                            await _userManager.AddToRoleAsync(user, RoleName);
+                        }
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, DS.ClientRole);
+                    }
 
 
                     var userId = await _userManager.GetUserIdAsync(user);
@@ -167,14 +196,20 @@ namespace Ecommerce.UI.Areas.Identity.Pages.Account
                     //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                     //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
+                    //Si es el Administrador quien creo al usuario retorna a la vista de usuarios
+                    if(User.IsInRole(DS.AdminRole)) {
+                        return RedirectToAction("Index", "User", new { Area = "Admin" });
+                    }
+
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                            //En este caso la peticion viene desde un usuario nuevo que tendra rol null y se le asignara cliente
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                            return LocalRedirect(returnUrl);
                     }
                 }
                 foreach (var error in result.Errors)
@@ -182,6 +217,7 @@ namespace Ecommerce.UI.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+            Input.SelectListItemsRoles = GetAllRoles();
 
             // If we got this far, something failed, redisplay form
             return Page();
@@ -208,6 +244,15 @@ namespace Ecommerce.UI.Areas.Identity.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<IdentityUser>)_userStore;
+        }
+
+        private IEnumerable<SelectListItem> GetAllRoles()
+        {
+            return _roleManager.Roles.Select(n => n.Name).Select(n => new SelectListItem
+            {
+                Text = n,
+                Value = n
+            });
         }
     }
 }
