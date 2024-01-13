@@ -3,6 +3,8 @@
 #nullable disable
 
 using System.ComponentModel.DataAnnotations;
+using System.Text;
+using System.Text.Encodings.Web;
 using Ecommerce.BLL.Notifications;
 using Ecommerce.DAL.Data;
 using Ecommerce.Models.Catalog;
@@ -12,7 +14,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Ecommerce.UI.Areas.Identity.Pages.Account
 {
@@ -132,8 +134,8 @@ namespace Ecommerce.UI.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                // var user = CreateUser();
-                
+
+
 
                 Console.WriteLine(Input.SelectedRoles);
 
@@ -171,7 +173,7 @@ namespace Ecommerce.UI.Areas.Identity.Pages.Account
                         await _roleManager.CreateAsync(new IdentityRole(DS.EmployeeRole));
                     }
 
-                   if(user.Roles != null && User.IsInRole(DS.AdminRole))
+                    if (user.Roles != null && User.IsInRole(DS.AdminRole))
                     {
                         foreach (var RoleName in user.Roles)
                         {
@@ -186,18 +188,26 @@ namespace Ecommerce.UI.Areas.Identity.Pages.Account
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    //var callbackUrl = Url.Page(
-                    //    "/Account/ConfirmEmail",
-                    //    pageHandler: null,
-                    //    values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                    //    protocol: Request.Scheme);
-
-                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    var callbackUrl = Url.Page(
+                        "/Account/ConfirmEmail",
+                        pageHandler: null,
+                        values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                        protocol: Request.Scheme);
+                    try
+                    {
+                        await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                              $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    }
+                    catch (Exception ex)
+                    {
+                        TempData[DS.Error] = "Error al enviar correo de confirmacion";
+                        return RedirectToAction("Index", "Home", new {Area = "Inventory"});
+                    }
 
                     //Si es el Administrador quien creo al usuario retorna a la vista de usuarios
-                    if(User.IsInRole(DS.AdminRole)) {
+                    if (User.IsInRole(DS.AdminRole))
+                    {
                         return RedirectToAction("Index", "User", new { Area = "Admin" });
                     }
 
@@ -207,9 +217,9 @@ namespace Ecommerce.UI.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                            //En este caso la peticion viene desde un usuario nuevo que tendra rol null y se le asignara cliente
-                            await _signInManager.SignInAsync(user, isPersistent: false);
-                            return LocalRedirect(returnUrl);
+                        //En este caso la peticion viene desde un usuario nuevo que tendra rol null y se le asignara cliente
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        return LocalRedirect(returnUrl);
                     }
                 }
                 foreach (var error in result.Errors)
