@@ -1,11 +1,14 @@
-﻿using Ecommerce.BLL.Utilities.Interfaces;
+﻿using Ecommerce.BLL.Notifications;
+using Ecommerce.BLL.Utilities.Interfaces;
 using Ecommerce.DAL.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = DS.AdminRole)]
     public class UserController : Controller
     {
         private readonly IUnitWork _UnitWork;

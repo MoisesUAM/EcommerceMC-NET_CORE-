@@ -1,11 +1,13 @@
 ﻿using Ecommerce.BLL.Notifications;
 using Ecommerce.BLL.Utilities.Interfaces;
 using Ecommerce.Models.Catalog;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = DS.AdminRole)]
     public class CategoryController : Controller
     {
         private readonly IUnitWork _UnitWork;
@@ -20,7 +22,7 @@ namespace Ecommerce.UI.Areas.Admin.Controllers
             return View();
         }
 
-        public async Task<ActionResult> Upsert(int? id)
+        public async Task<IActionResult> Upsert(int? id)
         {
             CategoryModel categoryModel = new CategoryModel();
 
@@ -43,7 +45,7 @@ namespace Ecommerce.UI.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Upsert(CategoryModel category)
+        public async Task<IActionResult> Upsert(CategoryModel category)
         {
             if (!await CheckName(category))
             {
@@ -90,9 +92,9 @@ namespace Ecommerce.UI.Areas.Admin.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            var categoryToDelete = await _UnitWork.CategoryRepository.GetById(id.GetValueOrDefault());
+            var categoryToDelete = await _UnitWork.CategoryRepository.GetFirst(c=>c.IdCategory == id);
             if (categoryToDelete == null)
             {
                 return Json(new { success = false, message = "Error al Eliminar Almacen" });
@@ -105,7 +107,7 @@ namespace Ecommerce.UI.Areas.Admin.Controllers
         #region API
 
         [HttpGet]
-        public async Task<ActionResult> GetAll()
+        public async Task<IActionResult> GetAll()
         {
             var allCategories = await _UnitWork.CategoryRepository.GetAll();
             return Json(new { data = allCategories });

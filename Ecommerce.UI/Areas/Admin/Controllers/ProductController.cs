@@ -2,12 +2,14 @@
 using Ecommerce.BLL.Utilities.Interfaces;
 using Ecommerce.Models.Catalog;
 using Ecommerce.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Ecommerce.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = DS.AdminRole+","+DS.EmployeeRole)]
     public class ProductController : Controller
     {
         private readonly IUnitWork _UnitWork;
@@ -24,7 +26,7 @@ namespace Ecommerce.UI.Areas.Admin.Controllers
             return View();
         }
 
-        public async Task<ActionResult> Upsert(int? id)
+        public async Task<IActionResult> Upsert(int? id)
         {
 
             ProductViewModel productViewModel = new ProductViewModel()
@@ -54,7 +56,7 @@ namespace Ecommerce.UI.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Upsert(ProductViewModel productViewModel)
+        public async Task<IActionResult> Upsert(ProductViewModel productViewModel)
         {
             //Se vuelven a cargar las listas desplegables en caso de necesitar volver a la vista
             productViewModel.CategorySelectItemList = await _UnitWork.ProductRepository.GetListCategoryRecords();
@@ -141,9 +143,9 @@ namespace Ecommerce.UI.Areas.Admin.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            var productToDelete = await _UnitWork.ProductRepository.GetById(id.GetValueOrDefault());
+            var productToDelete = await _UnitWork.ProductRepository.GetFirst(p=>p.IdProduct == id);
             if (productToDelete == null)
             {
                 return Json(new { success = false, message = "Error al Eliminar Producto" });
@@ -178,7 +180,7 @@ namespace Ecommerce.UI.Areas.Admin.Controllers
         #region API
 
         [HttpGet]
-        public async Task<ActionResult> GetAll()
+        public async Task<IActionResult> GetAll()
         {
             var allProducts = await _UnitWork.ProductRepository.GetAll(includedProperties:"Category,Brand");
             return Json(new { data = allProducts });

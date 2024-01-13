@@ -17,6 +17,12 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = $"/Identity/Account/Login";
+    options.LogoutPath = $"/Identity/Account/Logout";
+    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+});
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IUnitWork, UnitWorkImpl>();
 builder.Services.AddSingleton<IEmailSender, EmailSender>();
@@ -41,7 +47,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+//Para usar la autenticacion y autorizacion por roles debe estar estas lineas en ese orden importante!
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "areas",

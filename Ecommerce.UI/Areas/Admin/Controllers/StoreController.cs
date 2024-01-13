@@ -1,11 +1,13 @@
 ﻿using Ecommerce.BLL.Notifications;
 using Ecommerce.BLL.Utilities.Interfaces;
 using Ecommerce.Models.Catalog;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = DS.AdminRole)]
     public class StoreController : Controller
     {
         private readonly IUnitWork _unitWork;
@@ -20,7 +22,7 @@ namespace Ecommerce.UI.Areas.Admin.Controllers
             return View();
         }
 
-        public async Task<ActionResult> Upsert(int? id)
+        public async Task<IActionResult> Upsert(int? id)
         {
             StoreModel store = new StoreModel();
 
@@ -43,7 +45,7 @@ namespace Ecommerce.UI.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Upsert(StoreModel store)
+        public async Task<IActionResult> Upsert(StoreModel store)
         {
             if (!await ChekcName(store))
             {
@@ -78,9 +80,9 @@ namespace Ecommerce.UI.Areas.Admin.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            var storeToDelete = await _unitWork.StoreRepository.GetById(id.GetValueOrDefault());
+            var storeToDelete = await _unitWork.StoreRepository.GetFirst(s=>s.IdStore == id);
             if(storeToDelete == null)
             {
                 return Json(new {success = false, message = "Error al Eliminar Almacen"});

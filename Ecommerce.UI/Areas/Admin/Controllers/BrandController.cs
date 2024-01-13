@@ -1,11 +1,13 @@
 ﻿using Ecommerce.BLL.Notifications;
 using Ecommerce.BLL.Utilities.Interfaces;
 using Ecommerce.Models.Catalog;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = DS.AdminRole)]
     public class BrandController : Controller
     {
         private readonly IUnitWork _UnitWork;
@@ -20,7 +22,7 @@ namespace Ecommerce.UI.Areas.Admin.Controllers
             return View();
         }
 
-        public async Task<ActionResult> Upsert(int? id)
+        public async Task<IActionResult> Upsert(int? id)
         {
             BrandModel brandModel = new BrandModel();
 
@@ -43,7 +45,7 @@ namespace Ecommerce.UI.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Upsert(BrandModel brandModel)
+        public async Task<IActionResult> Upsert(BrandModel brandModel)
         {
             if (!await CheckName(brandModel))
             {
@@ -77,9 +79,9 @@ namespace Ecommerce.UI.Areas.Admin.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            var brandToDelete = await _UnitWork.BrandRepository.GetById(id.GetValueOrDefault());
+            var brandToDelete = await _UnitWork.BrandRepository.GetFirst(b=>b.IdBrand == id);
             if (brandToDelete == null)
             {
                 return Json(new { success = false, message = "Error al Eliminar Marca" });
@@ -106,7 +108,7 @@ namespace Ecommerce.UI.Areas.Admin.Controllers
         #region API
 
         [HttpGet]
-        public async Task<ActionResult> GetAll()
+        public async Task<IActionResult> GetAll()
         {
             var allBrands = await _UnitWork.BrandRepository.GetAll();
             return Json(new { data = allBrands });
