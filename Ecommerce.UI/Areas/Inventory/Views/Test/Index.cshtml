@@ -1,0 +1,59 @@
+﻿@model TestModel
+@{
+    ViewData["Title"] = "Vista para pruebas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var host = Context.Request.Host.Value;
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h5 class="text-center text-info">@ViewData["Title"]</h5>
+        </div>
+    </div>
+</div>
+<hr class="text-danger" />
+<div class="containear">
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-title">
+                    <h4 class="card-header">Formulario de pruebas</h4>
+                    <div class="card-body">
+                        <hr class="text-danger" />
+                        <form id="formDataTest" method="post" asp-action="DataTest">
+                            <div class="mb-3">
+                                <label class="form-label" for="idMessage">Mensaje</label>
+                                <input name="dataMessage" class="form-control" type="text" value="@host" />
+                            </div>
+                            <hr class="text-danger" />
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-outline-dark">Enviar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4"></div>
+    </div>
+    <div class="row">
+        <hr class="text-danger" />
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Mensaje recibido: </strong><p id="alertMessage" class="card-text text-center"></p>
+                <a class="btn btn-danger" id="linkMessage" href="#">Ir al path</a>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="col-sm-3"></div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/TestStringConnection.js"></script>
+}
+
+

@@ -7,8 +7,8 @@
 <hr class="text-danger" />
 <div class="container">
     <div class="row">
-        <div class="col-sm-12 col-md-1 col-lg-1"></div>
-        <div class="col-sm-12 col-md-6 col-lg-10">
+        <div class="col"></div>
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-10">
             <div class="card">
                 <div class="card-title">
                     <h3 class="text-center text-primary">@ViewData["Title"]</h3>
@@ -19,7 +19,7 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                         <div class="container">
                             <div class="row">
-                                <div class="col-sm-12 col-md-6 col-lg-6">
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
                                     <div class="form-floating mb-3">
                                         <input asp-for="Input.Name" class="form-control" aria-required="true" placeholder="Nombres completos" />
                                         <label class="text-secondary fw-bolder" asp-for="Input.Name">Nombre</label>
@@ -46,7 +46,7 @@
                                         <span asp-validation-for="Input.Country" class="text-danger"></span>
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-6">
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
                                     <div class="form-floating mb-3">
                                         <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" placeholder="Telefono" />
                                         <label class="text-secondary fw-bolder" asp-for="Input.PhoneNumber">Telefono/Movil</label>
@@ -67,6 +67,7 @@
                                         <label class="text-secondary" asp-for="Input.ConfirmPassword">Confirm Password</label>
                                         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                                     </div>
+                                        <input type="hidden" asp-for="Input.UrlCurrentClient" class="form-control" value="" id="urlCurrentClient" />
                                     @if (User.IsInRole(DS.AdminRole))
                                     {
                                         <div class="card-text text-center text-info">Asignacion de Roles</div>
@@ -102,7 +103,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-12 col-md-1 col-lg-1"></div>
+        <div class="col"></div>
     </div>
 </div>
 <hr class="text-danger" />
@@ -112,4 +113,14 @@
     <partial name="_ValidationScriptsPartial" />
     <script type="text/javascript" src="~/js/BsMultiSelect.js"></script>
     <script type="text/javascript" src="~/js/registerFunctions.js"></script>
+    <script>
+        $(function(){
+            var urlClient = window.location.href;
+
+            var urlObject = new URL(urlClient);
+            var domain = urlObject.origin.replace('https://', '');
+            console.log("Dominio: " + domain);
+            $('#urlCurrentClient').val(domain);
+        });
+    </script>
 }
