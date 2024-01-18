@@ -1,0 +1,61 @@
+﻿@model Ecommerce.Models.ViewModels.InventoryViewModel
+@{
+    ViewData["Title"] = "Administracion de Existencias";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center text-info fw-bold">@ViewData["Title"]</h2>
+        </div>
+    </div>
+</div>
+<hr class="text-danger" />
+<div class="container">
+    <div class="row">
+        <div class="d-flex justify-content-center">
+            <div class="card" style="min-width:80%;">
+                <div class="card-header">
+                    <h4>Agregar Detalle de la Existencia</h4>
+                </div>
+                <hr class="text-danger" />
+                <div class="card-body">
+                    <form>
+                        <div class="alert alert-danger" asp-validation-summary="ModelOnly"></div>
+                        <input type="hidden" asp-for="Inventory!.IdInventory" name="IdInventory" />
+                        <div class="mb-3">
+                            <div class="row">
+                                <div class="col-lg-3 col-xl-3"></div>
+                                <div class="col-sm-12 col-md-6 col-lg-6,col-xl-6">
+                                    <div class="d-flex justity-content-center">
+                                        <div class="container">
+                                            <div class="row">
+                                                <label class="form-label text-center">Almacen Donde se cargara la existencia</label>
+                                            </div>
+                                            <div class="row">
+                                                <div class="d-flex justify-content-around">
+                                                    <input class="form-control" asp-for="Inventory.Stores.Name" id="StoreName" type="hidden" disabled />
+                                                    <h4 class="text-center text-success"><label class="form-label">@Model.Inventory.Stores.Name &nbsp;@Model.Inventory.Stores.Description </label></h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-xl-3"></div>
+                            </div>
+                            <hr class="text-danger" />
+                            <div class="row">
+                                <div class="d-flex justify-content-around gap-2">
+                                    <button  class="btn btn-outline-primary" style="width:200px;"><i class="bi bi-floppy"></i> Agregar Productos</button>
+                                    <a asp-action="Index" class="btn btn-outline-success" style="width:200px;"><i class="bi bi-arrow-return-left"></i> Regresar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

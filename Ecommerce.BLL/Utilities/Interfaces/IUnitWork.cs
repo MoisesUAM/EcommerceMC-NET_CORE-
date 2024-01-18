@@ -9,6 +9,10 @@ namespace Ecommerce.BLL.Utilities.Interfaces
         IBrandRepository BrandRepository { get; }
         IProductRepository ProductRepository { get; }
         IUserModelRepository UserModelRepository { get; }
+        IStoreProductsRepository StoreProductsRepository { get; }
+        IInventoryRepository InventoryRepository { get; }
+        IDetailsInventoryRepository DetailsInventoryRepository { get; }
+        ITransactionsRepository TransactionsRepository { get; }
 
         Task Save();
     }

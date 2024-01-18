@@ -4,6 +4,7 @@ using Ecommerce.DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecommerce.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240116003718_InventoryTbl")]
+    partial class InventoryTbl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,42 +77,13 @@ namespace Ecommerce.DAL.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Ecommerce.Models.Catalog.DetailsInventoryModels", b =>
-                {
-                    b.Property<int>("IdDetailsIventory")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdDetailsIventory"));
-
-                    b.Property<int>("IdInventory")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdProducto")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LastStock")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdDetailsIventory");
-
-                    b.HasIndex("IdInventory");
-
-                    b.HasIndex("IdProducto");
-
-                    b.ToTable("DetailsInventories");
-                });
-
             modelBuilder.Entity("Ecommerce.Models.Catalog.InventoryModel", b =>
                 {
-                    b.Property<int>("IdInventory")
+                    b.Property<int>("IdIventory")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdInventory"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdIventory"));
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
@@ -127,7 +101,7 @@ namespace Ecommerce.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("IdInventory");
+                    b.HasKey("IdIventory");
 
                     b.HasIndex("IdStore");
 
@@ -232,62 +206,6 @@ namespace Ecommerce.DAL.Migrations
                     b.HasIndex("IdStore");
 
                     b.ToTable("StoresProducts");
-                });
-
-            modelBuilder.Entity("Ecommerce.Models.Catalog.TransactionsModel", b =>
-                {
-                    b.Property<int>("IdTransaction")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTransaction"));
-
-                    b.Property<string>("Comments")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CommitDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double>("Cost")
-                        .HasColumnType("float");
-
-                    b.Property<double>("CostAmount")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("float")
-                        .HasComputedColumnSql("[Quantity] * [Cost]");
-
-                    b.Property<int>("CurrentStock")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdProduct")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdStore")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LastStock")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("IdTransaction");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("IdProduct", "IdStore");
-
-                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -529,25 +447,6 @@ namespace Ecommerce.DAL.Migrations
                     b.HasDiscriminator().HasValue("UserModel");
                 });
 
-            modelBuilder.Entity("Ecommerce.Models.Catalog.DetailsInventoryModels", b =>
-                {
-                    b.HasOne("Ecommerce.Models.Catalog.InventoryModel", "Inventory")
-                        .WithMany()
-                        .HasForeignKey("IdInventory")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Ecommerce.Models.Catalog.ProductModel", "Product")
-                        .WithMany()
-                        .HasForeignKey("IdProducto")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Inventory");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("Ecommerce.Models.Catalog.InventoryModel", b =>
                 {
                     b.HasOne("Ecommerce.Models.Catalog.StoreModel", "Stores")
@@ -610,25 +509,6 @@ namespace Ecommerce.DAL.Migrations
                     b.Navigation("Products");
 
                     b.Navigation("Stores");
-                });
-
-            modelBuilder.Entity("Ecommerce.Models.Catalog.TransactionsModel", b =>
-                {
-                    b.HasOne("Ecommerce.Models.Catalog.UserModel", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Ecommerce.Models.Catalog.StoreProductModel", "StoreProduct")
-                        .WithMany()
-                        .HasForeignKey("IdProduct", "IdStore")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("StoreProduct");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -1,0 +1,47 @@
+﻿@model InventoryModel
+@{
+    ViewData["Title"] = "Administracion de Existencias";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center text-info fw-bold">@ViewData["Title"]</h2>
+        </div>
+    </div>
+</div>
+<hr class="text-danger" />
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-6">
+            <h5 class="text-center text-primary">Lista de Ordenes de Ingreso o carga de inventario</h5>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+            <div class="d-grid gap-2 col-8 mx-auto">
+                <a asp-action="CreateInventory" class="btn btn-outline-primary"><i class="bi bi-box-arrow-up"></i> Agregar Existencia</a>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="border p-4 rounded bg-light">
+            <table id="tblCategories" class="table table-responsive table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Almacen</th>
+                        <th>Producto</th>
+                        <th>Costo</th>
+                        <th>Cantidad</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/InventoryFunctions.js"></script>
+}

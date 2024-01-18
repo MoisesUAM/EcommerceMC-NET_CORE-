@@ -14,7 +14,10 @@ namespace Ecommerce.BLL.Utilities.Implementations
         public IBrandRepository BrandRepository { get; private set; }
         public IProductRepository ProductRepository { get; private set; }
         public IUserModelRepository UserModelRepository { get; private set; }
-
+        public IStoreProductsRepository StoreProductsRepository { get; private set; }
+        public IInventoryRepository InventoryRepository { get; private set; }
+        public IDetailsInventoryRepository DetailsInventoryRepository { get; private set; }
+        public ITransactionsRepository TransactionsRepository { get; private set; }
         public UnitWorkImpl(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -23,6 +26,11 @@ namespace Ecommerce.BLL.Utilities.Implementations
             BrandRepository = new BrandRepositoryImpl(_dbContext);
             ProductRepository = new ProductRepositoryImpl(_dbContext);
             UserModelRepository = new UserModelRepositoryImpl(_dbContext);
+            StoreProductsRepository = new StoreProductsRepositoryImpl(_dbContext);
+            InventoryRepository = new InventoryRepositoryImpl(_dbContext);
+            DetailsInventoryRepository = new DetailsInventoryRepositoryImpl(_dbContext);
+            TransactionsRepository = new TransactionRepositoryImpl(_dbContext);
+
         }
 
         public void Dispose()

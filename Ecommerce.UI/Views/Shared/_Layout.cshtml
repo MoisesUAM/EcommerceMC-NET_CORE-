@@ -19,6 +19,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet">
+    <link href="~/lib/select2-bootstrap-5-theme/select2-bootstrap-5-theme.min.css" rel="stylesheet">
 
 </head>
 <body>
@@ -55,6 +57,12 @@
                                         <li><a class="dropdown-item text-primary" asp-area="Admin" asp-controller="Brand" asp-action="Index"><i class="bi bi-patch-check"></i> Marcas</a></li>
                                     }
                                     <li><a class="dropdown-item text-primary" asp-area="Admin" asp-controller="Product" asp-action="Index"><i class="bi bi-upc-scan"></i> Productos</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Transacciones</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item text-primary" asp-area="Inventory" asp-controller="Inventory" asp-action="Index"><i class="bi bi-box-arrow-up"></i> Crear Existencias</a></li>
                                 </ul>
                             </li>
                         }
@@ -95,6 +103,7 @@
     <script src="~/js/toastr.js"></script>
     <script src="https://cdn.datatables.net/v/dt/dt-1.13.8/datatables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
+    <script src="~/lib/select2/js/select2.full.min.js"></script>
     
    
     @await RenderSectionAsync("Scripts", required: false)

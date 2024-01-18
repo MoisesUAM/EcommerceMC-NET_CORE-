@@ -1,0 +1,64 @@
+﻿
+@model Ecommerce.Models.ViewModels.InventoryViewModel
+
+@{
+    ViewData["Title"] = "Administracion de Existencias";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center text-info fw-bold">@ViewData["Title"]</h2>
+        </div>
+    </div>
+</div>
+
+<hr class="text-danger" />
+<div class="container">
+    <div class="row">
+        <div class="d-flex justify-content-center">
+            <div class="card" style="min-width:80%;">
+                <div class="card-header">
+                    <h4>Creacion/Alta de Inventario</h4>
+                </div>
+                <hr class="text-danger" />
+                <div class="card-body">
+                    <form method="post">
+                        <div class="alert alert-danger" asp-validation-summary="ModelOnly"></div>
+                        <input type="hidden" asp-for="Inventory!.Estate" />
+                        <input type="hidden" asp-for="Inventory!.UserId" />
+                        <input type="hidden" asp-for="Inventory!.StartDate" />
+                        <input type="hidden" asp-for="Inventory!.EndDate" />
+                        <div class="mb-3">
+                            <div class="row">
+                                <div class="col-lg-3 col-xl-3"></div>
+                                <div class="col-sm-12 col-md-6 col-lg-6,col-xl-6">
+                                    <div class="d-flex justity-content-center">
+                                        <select required class="form-select" asp-for="Inventory.IdStore" asp-items="@Model.StoreList">
+                                            <option disabled selected>--Eliga un Almacen</option>
+                                        </select>
+                                        <span asp-validation-for="Inventory.IdStore"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-xl-3"></div>
+                            </div>
+                            <hr class="text-danger" />
+                            <div class="row">
+                                <div class="d-flex justify-content-around gap-2">
+                                    <button type="submit" class="btn btn-outline-primary" style="width:200px;"><i class="bi bi-floppy"></i> Crear</button>
+                                    <a asp-action="Index" class="btn btn-outline-success" style="width:200px;"><i class="bi bi-arrow-return-left"></i> Regresar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+
