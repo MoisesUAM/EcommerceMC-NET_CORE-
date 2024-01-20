@@ -17,11 +17,17 @@
         <div class="d-flex justify-content-center">
             <div class="card" style="min-width:80%;">
                 <div class="card-header">
-                    <h4>Agregar Detalle de la Existencia</h4>
+                    <div class="row-sm-12 row-md-2"><h4>Almacen confirmado!</h4></div>
+                    <hr />
+                    <div class="row-sm-12 row-cols-md-10 float-end">
+                        <div class="d-flex justify-content-around gap-2">
+                            <a asp-action="Index" class="btn btn-sm btn-outline-success" style="width:200px;"><i class="bi bi-arrow-return-left"></i> Regresar</a>
+                        </div>
+                    </div>
                 </div>
                 <hr class="text-danger" />
                 <div class="card-body">
-                    <form>
+                    <form method="post">
                         <div class="alert alert-danger" asp-validation-summary="ModelOnly"></div>
                         <input type="hidden" asp-for="Inventory!.IdInventory" name="IdInventory" />
                         <div class="mb-3">
@@ -36,7 +42,7 @@
                                             <div class="row">
                                                 <div class="d-flex justify-content-around">
                                                     <input class="form-control" asp-for="Inventory.Stores.Name" id="StoreName" type="hidden" disabled />
-                                                    <h4 class="text-center text-success"><label class="form-label">@Model.Inventory.Stores.Name &nbsp;@Model.Inventory.Stores.Description </label></h4>
+                                                    <h5 class="text-center text-success"><label class="form-label">@Model.Inventory.Stores.Name &nbsp;@Model.Inventory.Stores.Description </label></h5>
                                                 </div>
                                             </div>
                                         </div>
@@ -45,17 +51,72 @@
                                 <div class="col-lg-3 col-xl-3"></div>
                             </div>
                             <hr class="text-danger" />
-                            <div class="row">
-                                <div class="d-flex justify-content-around gap-2">
-                                    <button  class="btn btn-outline-primary" style="width:200px;"><i class="bi bi-floppy"></i> Agregar Productos</button>
-                                    <a asp-action="Index" class="btn btn-outline-success" style="width:200px;"><i class="bi bi-arrow-return-left"></i> Regresar</a>
+                            <!--Campos para agregar detalle de inventarios o cargas de inventario-->
+                            <section id="detailsProductosForm">
+                                <div class="row">
+                                    <h5 class="text-center text-info fw-bold">Detalle de productos</h5>
+                                    <hr class="text-danger" />
+                                    <div class="d-flex justify-content-evenly mb-3 gap-2">
+                                        <div class="flex-grow-1 flex-lg-grow-1">
+                                            <div class="mb-3">
+                                                <select id="idProduct" name="idProduct" class="form-select">
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="d-inline-flex gap-1">
+                                            <div class="mb-3">
+                                                <input style="max-width:105px;" id="cantidadId" name="cantidadId" type="number" placeholder="Cantidad" min="1" class="form-control-sm" />
+                                            </div>
+                                            <div class="mb-3">
+                                                <button class="btn btn-sm btn-primary" onfocus="false" id="btnAgregar"><i class="bi bi-bag-plus-fill"></i> Agregar producto</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            </section>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+    <hr class="text-danger" />
+    <div class="row">
+        <div class="col col-sm-12 col-md-12 col-lg-1"></div>
+        <div class="col col-sm-12 col-md-12 col-lg-10">
+            <table class="table table-striped border table-hover">
+                <thead class="thead-dark">
+                    <tr class="table-secondary thead-dark text-center">
+                        <th>Producto</th>
+                        <th>Marca</th>
+                        <th>Costo</th>
+                        <th>Stock</th>
+                        <th>Cantidad</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.DetailsInventoryList)
+                    {
+                        <tr class="text-center">
+                            <td>@Html.DisplayFor(d=> item.Product.Description)</td>
+                            <td>@Html.DisplayFor(d => item.Product.Brand.Name)</td>
+                            <td>@Html.DisplayFor(d => item.Product.CostPrice)</td>
+                            <td>@Html.DisplayFor(d => item.LastStock)</td>
+                            <td>@Html.DisplayFor(d => item.Quantity)</td>
+                            <td></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col col-sm-12 col-md-12 col-lg-1"></div>
+    </div>
 </div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/DetailsInventoryFunctions.js" type="text/javascript"></script>
+}
+
+
 
