@@ -18,6 +18,7 @@ namespace Ecommerce.BLL.Utilities.Implementations
         public IInventoryRepository InventoryRepository { get; private set; }
         public IDetailsInventoryRepository DetailsInventoryRepository { get; private set; }
         public ITransactionsRepository TransactionsRepository { get; private set; }
+        public ICompanyRepository CompanyRepository { get; set; }
         public UnitWorkImpl(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -30,6 +31,7 @@ namespace Ecommerce.BLL.Utilities.Implementations
             InventoryRepository = new InventoryRepositoryImpl(_dbContext);
             DetailsInventoryRepository = new DetailsInventoryRepositoryImpl(_dbContext);
             TransactionsRepository = new TransactionRepositoryImpl(_dbContext);
+            CompanyRepository = new CompanyRepositoryImpl(_dbContext);
 
         }
 

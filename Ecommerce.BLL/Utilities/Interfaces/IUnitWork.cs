@@ -13,6 +13,7 @@ namespace Ecommerce.BLL.Utilities.Interfaces
         IInventoryRepository InventoryRepository { get; }
         IDetailsInventoryRepository DetailsInventoryRepository { get; }
         ITransactionsRepository TransactionsRepository { get; }
+        ICompanyRepository CompanyRepository { get; }
 
         Task Save();
     }

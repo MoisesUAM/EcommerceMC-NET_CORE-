@@ -52,6 +52,7 @@
                                 <ul class="dropdown-menu">
                                     @if (User.IsInRole(DS.AdminRole))
                                     {
+                                        <li><a class="dropdown-item text-primary" asp-area="Admin" asp-controller="Company" asp-action="Upsert"><i class="bi bi-building-gear"></i> Empresas</a></li>
                                         <li><a class="dropdown-item text-primary" asp-area="Admin" asp-controller="Store" asp-action="Index"><i class="bi bi-shop"></i> Almacenes</a></li>
                                         <li><a class="dropdown-item text-primary" asp-area="Admin" asp-controller="Category" asp-action="Index"><i class="bi bi-tags"></i> Categorias</a></li>
                                         <li><a class="dropdown-item text-primary" asp-area="Admin" asp-controller="Brand" asp-action="Index"><i class="bi bi-patch-check"></i> Marcas</a></li>
@@ -96,9 +97,9 @@
         </div>
     </footer>
     
+    
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js" integrity="sha512-WMEKGZ7L5LWgaPeJtw9MBM4i5w5OSBlSjTjCtSnvFJGSVD26gE5+Td12qN5pvWXhuWaWcVwF++F7aqu9cvqP0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="~/js/popper.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/toastr.js"></script>

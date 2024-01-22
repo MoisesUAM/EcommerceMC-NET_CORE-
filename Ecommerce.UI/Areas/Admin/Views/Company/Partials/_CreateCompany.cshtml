@@ -1,0 +1,70 @@
+﻿@model Ecommerce.Models.ViewModels.CompanyViewModel
+
+@{
+    ViewData["Subtitle"] = "Crear Nueva Compañia";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm col-md-2"></div>
+        <div class="col-sm-12 col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    @ViewData["Subtitle"]
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        <div class="row p-1 border-0">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" id="Name" asp-for="Company!.Name" class="form-control" placeholder="Nombre de la Compañia" />
+                            <label for="Name">Nombre de la Compañia</label>
+                            <span asp-validation-for="Company!.Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" id="Descripcion" asp-for="Company!.Description" class="form-control" placeholder="Descripcion de la Compañia" />
+                            <label for="Descripcion">Descripcion de la Compañia</label>
+                            <span asp-validation-for="Company!.Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" id="Pais" asp-for="Company!.Country" class="form-control" placeholder="Pais de la Compañia" />
+                            <label for="Descripcion">Pais de la Compañia</label>
+                            <span asp-validation-for="Company!.Country" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" id="Ciudad" asp-for="Company!.City" class="form-control" placeholder="Cuidad de la Compañia" />
+                            <label for="Descripcion">Ciudad de la Compañia</label>
+                            <span asp-validation-for="Company!.City" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" id="Direccion" asp-for="Company!.Address" class="form-control" placeholder="Direccion de la Compañia" />
+                            <label for="Descripcion">Direccion de la Compañia</label>
+                            <span asp-validation-for="Company!.Address" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="tel" id="Telefono" asp-for="Company!.PhoneNumber" class="form-control" placeholder="Telefono de la Compañia" />
+                            <label for="Descripcion">Telefono de la Compañia</label>
+                            <span asp-validation-for="Company!.PhoneNumber" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Bodega de Venta</label>
+                            <select asp-for="Company!.IdStore" asp-items="@Model.StoreListItem" class="form-select">
+                                <option value="" disabled >--Seleccione una Bodega--</option>
+                            </select>
+                            <span asp-validation-for="Company!.IdStore" class="text-danger"></span>
+                        </div>
+                        <hr class="text-danger" />
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-around">
+                                <button style="min-width:150px;" type="submit" class="btn btn-outline-info"><i class="bi bi-building-add"></i> Crear</button>
+                                <a style="min-width:150px;" class="btn btn-outline-dark" role="button" asp-asp-area="Inventory" asp-asp-controller="Inventory" asp-action="Index"><i class="bi bi-arrow-return-left"></i> Regresar</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm col-md-2"></div>
+    </div>
+</div>

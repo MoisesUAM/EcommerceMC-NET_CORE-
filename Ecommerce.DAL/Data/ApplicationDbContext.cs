@@ -18,6 +18,7 @@ namespace Ecommerce.DAL.Data
         public DbSet<InventoryModel> Inventories { get; set; }
         public DbSet<DetailsInventoryModels> DetailsInventories { get; set; }
         public DbSet<TransactionsModel> Transactions { get; set; }
+        public DbSet< CompanyModel> Companies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
