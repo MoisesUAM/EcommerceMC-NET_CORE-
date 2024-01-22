@@ -17,7 +17,7 @@ namespace Ecommerce.Models.Catalog
          * Navegaciones que se usaran para llamar los datos de las tablas
          * relacionadas
          */
-        public ProductModel? Products { get; set; }
-        public StoreModel? Stores { get; set; }
+        public ProductModel Products { get; set; }
+        public StoreModel Stores { get; set; }
     }
 }

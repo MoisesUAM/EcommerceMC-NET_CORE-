@@ -1,6 +1,6 @@
 ﻿
 let tblInventory;
-$(function () {
+$(document).ready(function () {
     console.log("Inventios en linea");
     loadInventoryTable();
 });
@@ -23,43 +23,27 @@ function loadInventoryTable() {
         },
 
         "ajax": {
-            "url": "/Inventory/Inventory/GetAllInventories"
+            "url": "/Inventory/Inventory/GetAllStoresProducts"
         },
         "columns": [
-            { "data": "serialNumber" },
-            { "data": "description" },
-            { "data": "category.name" },
-            { "data": "brand.name" },
+            { "data": "stores.name" },
             {
-                "data": "price",
+                "data": "products",
+                "render": function (data) {
+                    let productDetails = data.serialNumber + ' ' + data.description;
+                    return productDetails;
+                }
+            },
+            {
+                "data": "products.costPrice",
                 "className": "text-end",
                 "render": function (data) {
-                    //var formattedCurrency = data.toLocaleString("es-CR", { style: "currency", currency: "CRC" });
                     var formattedCurrency = data.toLocaleString("en-US", { style: "currency", currency: "USD" });
                     return formattedCurrency;
                 }
+                
             },
-            {
-                "data": "estate",
-                "render": function (data) {
-                    if (data) {
-                        return "Activo";
-                    } else {
-                        return "Inactivo";
-                    }
-                }
-            },
-            {
-                "data": "idProduct",
-                "render": function (data) {
-                    return `
-                     <div class="d-flex justify-content-around">
-                          <a href="/Admin/Product/Upsert/${data}" role="button" class="btn btn-outline-primary" title="Editar" style="cursor:pointer;"><i class="bi bi-pencil-square"></i></a>
-                          <a onclick=Delete("/Admin/Product/Delete/${data}") role="button" class="btn btn-outline-danger" title="Eliminar" style="cursor:pointer;"><i class="bi bi-trash3-fill"></i></a>
-                     </div>
-                    `;
-                }
-            }
+            { "data": "onHand", "className":"text-center" }
         ]
 
     });

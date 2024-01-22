@@ -25,11 +25,13 @@
                 <hr class="text-danger" />
                 <div class="card-body">
                     <form method="post">
-                        <div class="alert alert-danger" asp-validation-summary="ModelOnly"></div>
-                        <input type="hidden" asp-for="Inventory!.Estate" />
-                        <input type="hidden" asp-for="Inventory!.UserId" />
-                        <input type="hidden" asp-for="Inventory!.StartDate" />
-                        <input type="hidden" asp-for="Inventory!.EndDate" />
+                        <div class="mb-3">
+                            <div class="alert alert-danger" asp-validation-summary="ModelOnly"></div>
+                            <input type="hidden" asp-for="Inventory!.Estate" />
+                            <input type="hidden" asp-for="Inventory!.UserId" />
+                            <input type="hidden" asp-for="Inventory!.StartDate" />
+                            <input type="hidden" asp-for="Inventory!.EndDate" />
+                        </div>
                         <div class="mb-3">
                             <div class="row">
                                 <div class="col-lg-3 col-xl-3"></div>
@@ -38,7 +40,7 @@
                                         <select required class="form-select" asp-for="Inventory.IdStore" asp-items="@Model.StoreList">
                                             <option disabled selected>--Eliga un Almacen</option>
                                         </select>
-                                        <span asp-validation-for="Inventory.IdStore"></span>
+                                        <span class="text-danger" asp-validation-for="Inventory.IdStore"></span>
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-xl-3"></div>

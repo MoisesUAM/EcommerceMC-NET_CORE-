@@ -1,0 +1,58 @@
+﻿@model Ecommerce.Models.ViewModels.TransactionsViewModel
+
+<div class="container">
+
+    <table class="table table-responsive table-hover table-bordered">
+        @foreach(var store in Model.TransactionList!.GroupBy(s => s.StoreProduct!.Stores.Name))
+        {
+            <thead class="table-warning">
+                <tr>
+                    <th class="text-info" colspan="6">@store.Key</th>
+                    <th class="text-center" colspan="3">Saldo</th>
+                </tr>
+                <tr class="bg-dark">
+                    <th class="text-center">Fecha</th>
+                    <th class="text-center">Tipo</th>
+                    <th class="text-center">Detalle</th>
+                    <th class="text-center">Stock Anterior</th>
+                    <th class="text-center">Entrada</th>
+                    <th class="text-center">Salida</th>
+                    <th class="text-center">Stock</th>
+                    <th class="text-center">Costo</th>
+                    <th class="text-center">Total</th>
+                </tr>
+            </thead>
+            @foreach(var datos in Model.TransactionList!.Where(d=>d.StoreProduct!.Stores.Name == store.Key))
+            {
+                <tr>
+                    <td class="text-center">@datos.CommitDate.ToShortDateString()</td>
+                    <td class="text-center">@datos.Type</td>
+                    <td class="text-center">@datos.Comments</td>
+                    <td class="text-center">@datos.LastStock</td>
+                    @if(datos.Type == "IN")
+                    {
+                        <td class="text-center">@datos.Quantity</td>
+                    }
+                    else
+                    {
+                        <td class="text-center">--</td>
+
+                    }
+                    @if(datos.Type == "OUT")
+                    {
+                        <td class="text-center">@datos.Quantity</td>
+                    }
+                    else
+                    {
+                        <td class="text-center">--</td>
+
+                    }
+                    <td class="text-center">@datos.CurrentStock</td>
+                    <td class="text-center">@String.Format("{0:C}", datos.Cost)</td>
+                    <td class="text-center">@String.Format("{0:C}", datos.CostAmount)</td>
+                </tr>
+            }
+        }
+    </table>
+
+</div>

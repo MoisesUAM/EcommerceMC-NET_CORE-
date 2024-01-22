@@ -18,22 +18,22 @@
             <h5 class="text-center text-primary">Lista de Ordenes de Ingreso o carga de inventario</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-6">
-            <div class="d-grid gap-2 col-8 mx-auto">
+            <div class="d-flex justify-content-around gap-2 col-8 mx-auto">
                 <a asp-action="CreateInventory" class="btn btn-outline-primary"><i class="bi bi-box-arrow-up"></i> Agregar Existencia</a>
+                <a asp-action="TransactionInventory" class="btn btn-outline-warning"><i class="bi bi-clock-history"></i> Ver Transacciones</a>
             </div>
         </div>
     </div>
     <br />
     <div class="row">
         <div class="border p-4 rounded bg-light">
-            <table id="tblCategories" class="table table-responsive table-hover">
+            <table id="tblInventory" class="table table-responsive table-hover">
                 <thead class="table-dark">
                     <tr>
                         <th>Almacen</th>
                         <th>Producto</th>
                         <th>Costo</th>
                         <th>Cantidad</th>
-                        <th></th>
                     </tr>
                 </thead>
             </table>
@@ -42,6 +42,7 @@
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
     <script src="~/js/InventoryFunctions.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+    
 }

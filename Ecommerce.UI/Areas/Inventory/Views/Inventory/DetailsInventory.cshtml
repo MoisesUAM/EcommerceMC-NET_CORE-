@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = "Administracion de Existencias";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string _add = "sum";
+    string _decrease = "rest";
 }
 
 <div class="container">
@@ -15,12 +17,13 @@
 <div class="container">
     <div class="row">
         <div class="d-flex justify-content-center">
-            <div class="card" style="min-width:80%;">
+            <div class="card" style="width:1250px;">
                 <div class="card-header">
                     <div class="row-sm-12 row-md-2"><h4>Almacen confirmado!</h4></div>
                     <hr />
                     <div class="row-sm-12 row-cols-md-10 float-end">
                         <div class="d-flex justify-content-around gap-2">
+                            <button id="btnLines" class="btn btn-sm btn-outline-primary" style="width:200px;"><i class="bi bi-node-plus-fill"></i> Lineas</button>
                             <a asp-action="Index" class="btn btn-sm btn-outline-success" style="width:200px;"><i class="bi bi-arrow-return-left"></i> Regresar</a>
                         </div>
                     </div>
@@ -41,7 +44,6 @@
                                             </div>
                                             <div class="row">
                                                 <div class="d-flex justify-content-around">
-                                                    <input class="form-control" asp-for="Inventory.Stores.Name" id="StoreName" type="hidden" disabled />
                                                     <h5 class="text-center text-success"><label class="form-label">@Model.Inventory.Stores.Name &nbsp;@Model.Inventory.Stores.Description </label></h5>
                                                 </div>
                                             </div>
@@ -52,27 +54,7 @@
                             </div>
                             <hr class="text-danger" />
                             <!--Campos para agregar detalle de inventarios o cargas de inventario-->
-                            <section id="detailsProductosForm">
-                                <div class="row">
-                                    <h5 class="text-center text-info fw-bold">Detalle de productos</h5>
-                                    <hr class="text-danger" />
-                                    <div class="d-flex justify-content-evenly mb-3 gap-2">
-                                        <div class="flex-grow-1 flex-lg-grow-1">
-                                            <div class="mb-3">
-                                                <select id="idProduct" name="idProduct" class="form-select">
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="d-inline-flex gap-1">
-                                            <div class="mb-3">
-                                                <input style="max-width:105px;" id="cantidadId" name="cantidadId" type="number" placeholder="Cantidad" min="1" class="form-control-sm" />
-                                            </div>
-                                            <div class="mb-3">
-                                                <button class="btn btn-sm btn-primary" onfocus="false" id="btnAgregar"><i class="bi bi-bag-plus-fill"></i> Agregar producto</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <section class="card-footer" id="detailsProductosForm">
                             </section>
                         </div>
                     </form>
@@ -84,7 +66,7 @@
     <div class="row">
         <div class="col col-sm-12 col-md-12 col-lg-1"></div>
         <div class="col col-sm-12 col-md-12 col-lg-10">
-            <table class="table table-striped border table-hover">
+            <table id="tblProductDetails" class="table table-striped border table-hover">
                 <thead class="thead-dark">
                     <tr class="table-secondary thead-dark text-center">
                         <th>Producto</th>
@@ -92,7 +74,7 @@
                         <th>Costo</th>
                         <th>Stock</th>
                         <th>Cantidad</th>
-                        <th></th>
+                        <th>Sumar/Restar</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -104,10 +86,30 @@
                             <td>@Html.DisplayFor(d => item.Product.CostPrice)</td>
                             <td>@Html.DisplayFor(d => item.LastStock)</td>
                             <td>@Html.DisplayFor(d => item.Quantity)</td>
-                            <td></td>
+                            <td>
+                                <div class="dflex justify-content-around">
+                                    <a class="btn btn-outline-success" asp-controller="Inventory" asp-action="UpDownQuantity"
+                                       asp-all-route-data='new Dictionary<string, string> { { "operation", _add }, { "id", item.IdDetailsIventory.ToString() } }'>
+                                        <i class="bi bi-plus-square"></i>
+                                    </a>
+                                    <a class="btn btn-outline-danger" asp-action="UpDownQuantity" asp-all-route-data='new Dictionary<string, string> { { "operation", _decrease }, { "id", item.IdDetailsIventory.ToString() } }'><i class="bi bi-dash-square-dotted"></i></a>
+                                </div>
+                            </td>
                         </tr>
                     }
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="6">
+                            @if (Model.DetailsInventoryList.Count() > 0)
+                            {
+                                <div class="row-cols-4">
+                                    <a asp-action="CreateStock" asp-route-id="@Model.Inventory.IdInventory" class="btn btn-outline-warning fw-bolder">Crear Stock</a>
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
         <div class="col col-sm-12 col-md-12 col-lg-1"></div>

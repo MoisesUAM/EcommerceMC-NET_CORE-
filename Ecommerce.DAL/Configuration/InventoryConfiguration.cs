@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Models.Catalog;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
