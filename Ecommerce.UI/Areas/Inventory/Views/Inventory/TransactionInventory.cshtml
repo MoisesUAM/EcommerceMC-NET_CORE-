@@ -22,7 +22,8 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-around gap-2">
                         <h3 class="text-primary">Transacciones por producto</h3>
-                        <button id="btnShowHideForm" class="btn btn-sm btn-outline-danger float-end" style="min-width:200px;"><i class="bi bi-arrows-angle-contract"></i>&nbsp; Ocultar</button>
+                        <button id="btnShowHideForm" class="btn btn-sm btn-outline-danger float-end" style="min-width:150px;" ><i class="bi bi-arrows-angle-contract"></i>&nbsp; Ocultar</button>
+                        <a asp-action="Index" class="btn btn-outline-dark" style="min-width:150px;">Regresar</a>
                     </div>
                 </div>
                 <div id="formContainer" class="card-body">
@@ -48,7 +49,6 @@
                         <hr class="text-danger" />
                         <div class="d-flex justify-content-start mb-3 gap-3">
                             <input id="btnGenerate" type="submit" value="Generar Reporte" class="form-control btn btn-outline-info" style="width:200px;" />
-                            <a asp-action="Index" class="btn btn-outline-dark" style="width:200px;">Regresar</a>
                         </div>
                     </form>
                 </div>
@@ -64,11 +64,11 @@
                     <h5>Transaciones registradas</h5>
                     <div class="bg-info bg-opacity-25 rounded rounded-3 text-center" style="min-width:160px;">
                         <strong>Desde: </strong>
-                         @Model.StartDate.ToShortDateString()
+                        @Model.StartDate.ToString("dd-MMM-yyyy")
                     </div>
                     <div class="bg-info bg-opacity-25 rounded rounded-3 text-center" style="min-width:160px;">
                         <strong>Hasta: </strong>
-                        @Model.EndDate.ToShortDateString()
+                        @Model.EndDate.ToString("dd-MMM-yyyy")
                     </div>
                     <div class="bg-info bg-opacity-25 rounded rounded-3 text-center ps-1 pe-1" style="min-width:160px;">
                         <strong>Producto: </strong>

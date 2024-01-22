@@ -25,7 +25,7 @@
             @foreach(var datos in Model.TransactionList!.Where(d=>d.StoreProduct!.Stores.Name == store.Key))
             {
                 <tr>
-                    <td class="text-center">@datos.CommitDate.ToShortDateString()</td>
+                    <td class="text-center">@datos.CommitDate.ToString("dd-MMM-yyyy")</td>
                     <td class="text-center">@datos.Type</td>
                     <td class="text-center">@datos.Comments</td>
                     <td class="text-center">@datos.LastStock</td>
@@ -53,6 +53,30 @@
                 </tr>
             }
         }
+        <tfoot>
+            <tr>
+                <td colspan="11">
+                    <div class="mb-3">
+                        @if (Model.TransactionList.Count() !=0)
+                        {
+                            <a asp-action="PrintReport" asp-route-startDate="@Model.StartDate"
+                               asp-route-endDate="@Model.EndDate"
+                               asp-route-productId="@Model.Products.IdProduct"
+                            class="btn btn-outline-primary"><i class="bi bi-printer"></i>&nbsp; Imprimir</a>
+                        }
+                        else
+
+                        {
+                            <div class="alert alert-info" role="alert">
+                                <strong>No encontraron Datos</strong>
+                                &nbsp; la consulta en los parametros utilizados no arrojo resultados!
+                            </div>
+
+                        }
+                    </div>
+                </td>
+            </tr>
+        </tfoot>
     </table>
 
 </div>

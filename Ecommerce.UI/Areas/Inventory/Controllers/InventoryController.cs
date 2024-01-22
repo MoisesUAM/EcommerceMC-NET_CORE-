@@ -4,6 +4,7 @@ using Ecommerce.Models.Catalog;
 using Ecommerce.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Rotativa.AspNetCore;
 using System.Security.Claims;
 
 namespace Ecommerce.UI.Areas.Inventory.Controllers
@@ -210,6 +211,31 @@ namespace Ecommerce.UI.Areas.Inventory.Controllers
                 );
 
             return View(transactionsViewModel);
+        }
+
+        public async Task<IActionResult> PrintReport(DateTime startDate, DateTime endDate, int productId)
+        {
+            TransactionsViewModel transactionsViewModel = new TransactionsViewModel();
+            transactionsViewModel.Products = new ProductModel();
+            transactionsViewModel.Products = await _unitWork.ProductRepository.GetById(productId);
+            transactionsViewModel.StartDate = startDate;
+            transactionsViewModel.EndDate = endDate;
+            transactionsViewModel.TransactionList = await _unitWork.TransactionsRepository.GetAll(
+                t => t.StoreProduct!.IdProduct == productId &&
+                (t.CommitDate >= transactionsViewModel.StartDate &&
+                t.CommitDate <= transactionsViewModel.EndDate),
+                includedProperties: "StoreProduct,StoreProduct.Products,StoreProduct.Stores",
+                orderBy: o => o.OrderBy(o => o.CommitDate)
+                );
+
+            return new ViewAsPdf("PrintReport", transactionsViewModel)
+            {
+                FileName = "Reporte de Transacciones codigo: " + transactionsViewModel.Products.SerialNumber + ".pdf",
+                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
+                PageSize = Rotativa.AspNetCore.Options.Size.A4,
+                CustomSwitches = "--page-offset 0 --footer-center [page] --footer-font-size 12",
+                ContentType = "text/html"
+            };
         }
 
         #region API
