@@ -19,6 +19,12 @@ namespace Ecommerce.BLL.Utilities.Implementations
         public IDetailsInventoryRepository DetailsInventoryRepository { get; private set; }
         public ITransactionsRepository TransactionsRepository { get; private set; }
         public ICompanyRepository CompanyRepository { get; set; }
+        public IShoppinCartRepository ShoppinCartRepository {  get; private set; }
+
+        public IOrderRepository OrderRepository { get; private set; }
+
+        public IOrderDetailRepository OrderDetailRepository {  get; private set; }
+
         public UnitWorkImpl(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -32,7 +38,9 @@ namespace Ecommerce.BLL.Utilities.Implementations
             DetailsInventoryRepository = new DetailsInventoryRepositoryImpl(_dbContext);
             TransactionsRepository = new TransactionRepositoryImpl(_dbContext);
             CompanyRepository = new CompanyRepositoryImpl(_dbContext);
-
+            ShoppinCartRepository = new ShoppingCartRepositoryImpl(_dbContext);
+            OrderRepository = new OrderRepositoryImpl(_dbContext);
+            OrderDetailRepository = new OrderDetailsRepositoryImpl(_dbContext);
         }
 
         public void Dispose()

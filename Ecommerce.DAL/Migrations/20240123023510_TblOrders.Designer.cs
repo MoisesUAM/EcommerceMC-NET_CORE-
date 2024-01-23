@@ -4,6 +4,7 @@ using Ecommerce.DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecommerce.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240123023510_TblOrders")]
+    partial class TblOrders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -198,35 +201,6 @@ namespace Ecommerce.DAL.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Inventories");
-                });
-
-            modelBuilder.Entity("Ecommerce.Models.Catalog.OrderDetailsModel", b =>
-                {
-                    b.Property<int>("IdOrderDetail")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdOrderDetail"));
-
-                    b.Property<int>("IdOrder")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdProduct")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdOrderDetail");
-
-                    b.HasIndex("IdOrder");
-
-                    b.HasIndex("IdProduct");
-
-                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("Ecommerce.Models.Catalog.OrderModel", b =>
@@ -777,25 +751,6 @@ namespace Ecommerce.DAL.Migrations
                     b.Navigation("Stores");
 
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("Ecommerce.Models.Catalog.OrderDetailsModel", b =>
-                {
-                    b.HasOne("Ecommerce.Models.Catalog.ProductModel", "Orders")
-                        .WithMany()
-                        .HasForeignKey("IdOrder")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Ecommerce.Models.Catalog.OrderModel", "Products")
-                        .WithMany()
-                        .HasForeignKey("IdProduct")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Orders");
-
-                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Ecommerce.Models.Catalog.OrderModel", b =>
