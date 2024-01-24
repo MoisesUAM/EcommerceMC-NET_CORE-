@@ -1,0 +1,117 @@
+﻿@model Ecommerce.Models.ViewModels.ShoppinCartViewModel
+@using Ecommerce.BLL.Notifications
+@{
+    ViewData["Subtitle"] = "Detalles del producto";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <h2 class="text-center text-info fw-bolder">@ViewData["Subtitle"]</h2>
+        </div>
+    </div>
+</div>
+<hr class="text-danger" />
+<div class="container-md">
+    <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-6 mb-3" s>
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-around">
+                        <div class="bg-dark text-white text-center fw-bold p-2 rounded-pill" style="min-width:200px;">
+                            @Model.Product!.Category.Name
+                        </div>
+                        <div class="bg-info text-white text-center fw-bold p-2 rounded-pill" style="min-width:200px;">
+                            @Model.Product!.Brand.Name
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        <input type="hidden" asp-for="Stock" id="stockId" />
+                        <input type="hidden" asp-for="ShoppingCart.IdProduct" />
+                        <hr class="text-danger"/>
+                        <div class="mb-3 mt-3">
+                            <div class="lead text-black">
+                                <h2 class="text-center">@String.Format("{0:C}", Model.Product.Price)</h2>
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="mb-3">
+                            <div class="lead text-black">
+                                <h4>@Model.Product.Description</h4>
+                                <hr class="text-primary"/>
+                                <p class="card-text text-info fw-bold">@Model.Product.SerialNumber</p>
+                            </div>
+                        </div>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <hr class="text-danger" />
+                        <div class="mb-3">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    @if (Model.Stock == 0)
+                                    {
+                                        <label class="form-label text-danger fw-bold">Sin Stock</label>
+                                    }
+                                    else
+                                    {
+                                        <label class="form-label text-info fw-bold">Stock Disponible: @Model.Stock</label>
+                                    }
+                                </div>
+                                <div class="row gap-2">
+                                    <input type="number" id="cantidadId" class="form-control" asp-for="ShoppingCart.Quantity" style="width:150px;" />
+                                    <button id="btnAgregar" style="width:190px;" type="submit" class="btn btn-outline-warning"><i class="bi bi-cart-plus-fill"></i>&nbsp; Agregar al Carrito</button>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="text-danger" />
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-end">
+                                <a style="min-width:150px;" class="btn btn-outline-dark" role="button" asp-action="Index"><i class="bi bi-arrow-return-left"></i> Regresar</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+            <div class="card" style="min-height:535px; max-height:535px; overflow:hidden;">
+                <img id="imagePreview" src="@DS.ImagesRootPaht@Model.Product!.ImageUrl" class="img-fluid" style="min-height:530px; max-height:535px;object-fit:fill;">
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $("#btnAgregar").on("click", function () {
+            let stock = $("#stockId").val();
+            let cantidad = $("#cantidadId").val();
+            
+            if (cantidad.toString() == "") {
+                Swal.fire({
+                    title: "Campo Cantidad vacio",
+                    text: "Debe Seleccionar una cantidad valida",
+                    icon: "error"
+                });
+                return false;
+            }
+            if (cantidad < 1) {
+                Swal.fire({
+                    title: "Campo Cantidad en negativo",
+                    text: "Debe Seleccionar una cantidad igual o mayor que 1",
+                    icon: "error"
+                });
+                return false;
+            }
+            if (parseInt(cantidad) > parseInt(stock)) {
+                Swal.fire({
+                    title: "Cantidad supera el Stock",
+                    text: "Debe Seleccionar una cantidad igual o menor al stock disponible",
+                    icon: "error"
+                });
+                return false;
+            }
+        });
+    </script>
+    }

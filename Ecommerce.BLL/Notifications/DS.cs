@@ -9,5 +9,6 @@
         public const string AdminRole = "Administrator";
         public const string ClientRole = "Client";
         public const string EmployeeRole = "Employee";
+        public const string SesionShoppingCart = "Sesion Compras";
     }
 }

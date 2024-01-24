@@ -26,6 +26,13 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IUnitWork, UnitWorkImpl>();
 builder.Services.AddSingleton<IEmailSender, EmailSender>();
+builder.Services.AddSession(options =>
+{
+    _ = options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+
+});
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
@@ -46,6 +53,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 
 //Para usar la autenticacion y autorizacion por roles debe estar estas lineas en ese orden importante!
 app.UseAuthentication();

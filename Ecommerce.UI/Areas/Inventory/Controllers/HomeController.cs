@@ -1,8 +1,12 @@
-﻿using Ecommerce.BLL.Utilities.Interfaces;
+﻿using Ecommerce.BLL.Notifications;
+using Ecommerce.BLL.Utilities.Interfaces;
 using Ecommerce.Models.Catalog;
 using Ecommerce.Models.PaginationSpecs;
+using Ecommerce.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace Ecommerce.UI.Areas.Inventory.Controllers
 {
@@ -11,12 +15,24 @@ namespace Ecommerce.UI.Areas.Inventory.Controllers
     {
         private readonly IUnitWork _UnitWork;
 
+        [BindProperty]
+        public ShoppinCartViewModel ShoppinCartVM { get; set; }
+
         public HomeController(IUnitWork unitWork)
         {
             _UnitWork = unitWork;
         }
-        public IActionResult Index(int itemsPerPage, int pageNumber, string _search="", string currentSearch ="")
+        public async Task<IActionResult> Index(int itemsPerPage, int pageNumber, string _search="", string currentSearch ="")
         {
+            //Controlar sesion
+            var claimIdentity = (ClaimsIdentity)User.Identity;
+            var claims = claimIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if(claims!= null)
+            {
+                var shoppingCartList = await _UnitWork.ShoppinCartRepository.GetAll(s => s.UserId == claims.Value);
+                HttpContext.Session.SetInt32(DS.SesionShoppingCart, shoppingCartList.Count());
+            }
+
             if (!String.IsNullOrEmpty(_search))
             {
                 pageNumber = 1;
@@ -58,6 +74,63 @@ namespace Ecommerce.UI.Areas.Inventory.Controllers
             if(_results.PageMetaData!.TotalPages == 1) { ViewData["FirtsPage"] = "disabled"; ViewData["LastPage"] = "disabled"; }
 
             return View(_results);
+        }
+
+        public async Task<IActionResult> ProductDetails(int id)
+        {
+            ShoppinCartVM = new ShoppinCartViewModel();
+            ShoppinCartVM.Company = await _UnitWork.CompanyRepository.GetFirst();
+            ShoppinCartVM.Product = await _UnitWork.ProductRepository.GetFirst(p=>p.IdProduct == id, includedProperties: "Brand,Category");
+            var storeProduct = await _UnitWork.StoreProductsRepository.GetFirst(p=>p.IdProduct == id && p.IdStore == ShoppinCartVM.Company.IdStore);
+            if(storeProduct == null)
+            {
+                ShoppinCartVM.Stock = 0;
+            }
+            else
+            {
+                ShoppinCartVM.Stock = storeProduct!.OnHand;
+
+            }
+            ShoppinCartVM.ShoppingCart = new ShoppingCartModel()
+            {
+                Products = ShoppinCartVM.Product,
+                IdProduct = ShoppinCartVM.Product.IdProduct
+            };
+
+            return View(ShoppinCartVM);
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> ProductDetails(ShoppinCartViewModel shoppinCartVm)
+        {
+            var claimIdentity = (ClaimsIdentity)User.Identity;
+            var claims = claimIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            shoppinCartVm.ShoppingCart.UserId = claims!.Value;
+            string userApp = claims!.Value;
+
+
+
+            ShoppingCartModel cartDB = await _UnitWork.ShoppinCartRepository.GetFirst(c => c.UserId == userApp && c.IdProduct == shoppinCartVm.ShoppingCart.IdProduct);
+            if(cartDB == null)
+            {
+                await _UnitWork.ShoppinCartRepository.Add(shoppinCartVm.ShoppingCart);
+            }
+            else
+            {
+                cartDB.Quantity += shoppinCartVm.ShoppingCart.Quantity;
+                _UnitWork.ShoppinCartRepository.Update(cartDB);
+            }
+
+            await _UnitWork.Save();
+
+            TempData[DS.Success] = "Se agrego el producto al carrito de compras";
+            //agregar valor a la sesion
+            var shoppingCartList = await _UnitWork.ShoppinCartRepository.GetAll(s => s.UserId == userApp);
+            HttpContext.Session.SetInt32(DS.SesionShoppingCart, shoppingCartList.Count());
+            return RedirectToAction("Index");
         }
 
 

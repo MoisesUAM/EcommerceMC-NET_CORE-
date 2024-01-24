@@ -4,6 +4,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Ecommerce.BLL.Notifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,7 @@ namespace Ecommerce.UI.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
+            HttpContext.Session.SetInt32(DS.SesionShoppingCart, 0);
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
             if (returnUrl != null)

@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Ecommerce.BLL.Utilities.Interfaces;
+using Ecommerce.BLL.Notifications;
+using System.Security.Claims;
 
 namespace Ecommerce.UI.Areas.Identity.Pages.Account
 {
@@ -21,11 +24,13 @@ namespace Ecommerce.UI.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IUnitWork _unitWork;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, IUnitWork unitWork)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _unitWork = unitWork;
         }
 
         /// <summary>
@@ -114,6 +119,11 @@ namespace Ecommerce.UI.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    //Controlar sesion
+                        var userSession = await _unitWork.UserModelRepository.GetFirst(u=> u.UserName == Input.Email);
+                        var shoppingCartList = await _unitWork.ShoppinCartRepository.GetAll(s => s.UserId == userSession.Id);
+                        HttpContext.Session.SetInt32(DS.SesionShoppingCart, shoppingCartList.Count());
+
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

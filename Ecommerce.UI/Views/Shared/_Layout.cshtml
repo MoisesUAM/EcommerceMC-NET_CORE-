@@ -1,4 +1,6 @@
 ﻿@using Ecommerce.BLL.Notifications
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
 
 <!DOCTYPE html>
 <html lang="es-us">
@@ -77,6 +79,27 @@
                                     <li><a class="dropdown-item text-primary" asp-area="Admin" asp-controller="User" asp-action="Index"><i class="bi bi-people"></i> Usuarios</a></li>
                                 </ul>
                             </li>
+                        }
+                        @if(httpContextAccessor.HttpContext.Session.GetInt32(DS.SesionShoppingCart) != null)
+                        {
+                            <li>
+                                <a asp-area="Inventory" asp-controller="ShoppingCart" asp-action="Index" class="nav-link text-primary position-relative">
+                                    @{
+                                        var productsNumber = httpContextAccessor.HttpContext.Session.GetInt32(DS.SesionShoppingCart);
+                                    }
+                                    <i class="bi bi-cart-fill fs-5"></i>
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">@productsNumber</span>
+                                    <span class="visually-hidden">Articulos</span>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <a href="#" class="nav-link text-primary float-end" >
+                                <i class="bi bi-cart-fill fs-5"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
+                                <span class="visually-hidden">Articulos</span>
+                            </a>
                         }
                     </ul>
                     <partial name="_LoginPartial" />

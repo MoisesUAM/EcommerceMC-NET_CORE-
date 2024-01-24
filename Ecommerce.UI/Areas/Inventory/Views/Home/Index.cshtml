@@ -50,7 +50,7 @@
                             <p class="card-text text-success">$ @String.Format("{0:#,##0.00}", product.Price)</p>
                             <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto bg-white">
                                 <div class="container">
-                                    <a href="#" class="btn btn-outline-primary"><i class="bi bi-bookmarks"></i><span class="details-hidden">Detalles</span></a>
+                                    <a asp-action="ProductDetails" asp-route-id="@product.IdProduct" class="btn btn-outline-primary"><i class="bi bi-bookmarks"></i><span class="details-hidden">Detalles</span></a>
                                 </div>
                             </div>
                         </div>
