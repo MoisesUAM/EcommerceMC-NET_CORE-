@@ -16,11 +16,11 @@ namespace Ecommerce.DAL.Configuration
 
             //Navegaciones
 
-            builder.HasOne(x=>x.Orders).WithMany()
-                .HasForeignKey(x=>x.IdOrder)
+            builder.HasOne(x => x.Orders).WithMany()
+                .HasForeignKey(x => x.IdOrder)
                 .OnDelete(DeleteBehavior.NoAction);
-            builder.HasOne(x=>x.Products).WithMany()
-                .HasForeignKey(x=> x.IdProduct)
+            builder.HasOne(x => x.Products).WithMany()
+                .HasForeignKey(x => x.IdProduct)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }

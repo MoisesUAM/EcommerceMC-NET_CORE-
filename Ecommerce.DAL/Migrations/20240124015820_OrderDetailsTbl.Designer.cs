@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecommerce.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240123025321_TblOrderDetails")]
-    partial class TblOrderDetails
+    [Migration("20240124015820_OrderDetailsTbl")]
+    partial class OrderDetailsTbl
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -784,13 +784,13 @@ namespace Ecommerce.DAL.Migrations
 
             modelBuilder.Entity("Ecommerce.Models.Catalog.OrderDetailsModel", b =>
                 {
-                    b.HasOne("Ecommerce.Models.Catalog.ProductModel", "Orders")
+                    b.HasOne("Ecommerce.Models.Catalog.OrderModel", "Orders")
                         .WithMany()
                         .HasForeignKey("IdOrder")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Ecommerce.Models.Catalog.OrderModel", "Products")
+                    b.HasOne("Ecommerce.Models.Catalog.ProductModel", "Products")
                         .WithMany()
                         .HasForeignKey("IdProduct")
                         .OnDelete(DeleteBehavior.NoAction)

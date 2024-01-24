@@ -5,7 +5,7 @@
 namespace Ecommerce.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class TblOrderDetails : Migration
+    public partial class OrderDetailsTbl : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,13 +25,13 @@ namespace Ecommerce.DAL.Migrations
                 {
                     table.PrimaryKey("PK_OrderDetails", x => x.IdOrderDetail);
                     table.ForeignKey(
-                        name: "FK_OrderDetails_Orders_IdProduct",
-                        column: x => x.IdProduct,
+                        name: "FK_OrderDetails_Orders_IdOrder",
+                        column: x => x.IdOrder,
                         principalTable: "Orders",
                         principalColumn: "IdOrder");
                     table.ForeignKey(
-                        name: "FK_OrderDetails_Products_IdOrder",
-                        column: x => x.IdOrder,
+                        name: "FK_OrderDetails_Products_IdProduct",
+                        column: x => x.IdProduct,
                         principalTable: "Products",
                         principalColumn: "IdProduct");
                 });

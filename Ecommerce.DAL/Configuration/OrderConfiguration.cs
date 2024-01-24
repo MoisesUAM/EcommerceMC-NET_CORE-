@@ -27,8 +27,8 @@ namespace Ecommerce.DAL.Configuration
 
             //navegacion
 
-            builder.HasOne(x=>x.Users).WithMany()
-                .HasForeignKey(x=>x.IdUser)
+            builder.HasOne(x => x.Users).WithMany()
+                .HasForeignKey(x => x.IdUser)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }

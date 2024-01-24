@@ -781,13 +781,13 @@ namespace Ecommerce.DAL.Migrations
 
             modelBuilder.Entity("Ecommerce.Models.Catalog.OrderDetailsModel", b =>
                 {
-                    b.HasOne("Ecommerce.Models.Catalog.ProductModel", "Orders")
+                    b.HasOne("Ecommerce.Models.Catalog.OrderModel", "Orders")
                         .WithMany()
                         .HasForeignKey("IdOrder")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Ecommerce.Models.Catalog.OrderModel", "Products")
+                    b.HasOne("Ecommerce.Models.Catalog.ProductModel", "Products")
                         .WithMany()
                         .HasForeignKey("IdProduct")
                         .OnDelete(DeleteBehavior.NoAction)

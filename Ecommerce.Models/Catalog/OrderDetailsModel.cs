@@ -13,7 +13,7 @@ namespace Ecommerce.Models.Catalog
         public double Price { get; set; }
 
         //Navegacion
-        public OrderModel? Products { get; set; }
-        public ProductModel? Orders { get; set; }
+        public OrderModel? Orders { get; set; }
+        public ProductModel? Products { get; set; }
     }
 }
