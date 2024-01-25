@@ -16,5 +16,36 @@ namespace Ecommerce.DAL.Repositories.Implementations
         {
             _dbContext.Update(order);
         }
+
+        public void UpdatePaymentStateStripe(int orderId, string sessionId, string transactionId)
+        {
+            var orderDB = _dbContext.Orders.FirstOrDefault(o=>o.IdOrder == orderId);
+            if (orderDB != null)
+            {
+                if(!String.IsNullOrEmpty(sessionId))
+                {
+                    orderDB!.SessionId = sessionId;
+                }
+                if(!String.IsNullOrEmpty(transactionId))
+                {
+                    orderDB!.IdTransaction = transactionId;
+                    orderDB.PaymentDate = DateTime.Now;
+                }
+
+                _dbContext.SaveChanges();
+            }
+        }
+
+        public void UpdateStateOrder(int orderId, string orderState, string paymentState)
+        {
+            var orderDB = _dbContext.Orders.FirstOrDefault(o=>o.IdOrder == orderId);
+            if (orderDB != null)
+            {
+                orderDB.OrderState = orderState;
+                orderDB.PaymentState = paymentState;
+            }
+
+            _dbContext.SaveChanges();
+        }
     }
 }

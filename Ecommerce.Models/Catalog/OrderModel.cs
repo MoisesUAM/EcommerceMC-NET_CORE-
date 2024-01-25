@@ -26,6 +26,7 @@ namespace Ecommerce.Models.Catalog
         public string? City { get; set; }
         public string? Country { get; set; }
         public string? PhoneNumber { get; set; }
+        public string? SessionId { get; set; }
 
         //navegaciones
         public UserModel? Users { get; set; }

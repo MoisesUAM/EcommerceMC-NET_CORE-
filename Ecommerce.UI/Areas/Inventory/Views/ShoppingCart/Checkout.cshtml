@@ -1,0 +1,131 @@
+﻿@model Ecommerce.Models.ViewModels.ShoppinCartViewModel
+@using Ecommerce.BLL.Notifications
+
+@{
+    ViewData["Title"] = "Confirmacion de informacion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center text-info fw-bold">@ViewData["Title"]</h2>
+        </div>
+    </div>
+</div>
+
+<form method="post">
+    <br />
+    <div class="backgroundWhiteBorder">
+        <div class="container">
+            <div class="card">
+                <div class="card-header bg-dark text-light ml-0 row">
+                    <div class="col-6">
+                        <i class="fa fa-shopping-cart"></i> &nbsp;
+                        Detalles de la Orden
+                    </div>
+
+                </div>
+                <div class="card-body">
+                    <div class="container rounded p-2">
+                        <div class="row">
+                            <div class="col-12 col-lg-6 pb-4">
+                                <div class="row">
+                                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="text-success">Detalles de Envío:</span>
+                                    </h4>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">
+                                        <label>Nombres</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input id="namesId" asp-for="Order!.ClientName" type="text" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">
+                                        <label>Telefono</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input id="phoneId" asp-for="Order!.PhoneNumber" type="text" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">
+                                        <label>Direccion</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input id="shippinAddressId" asp-for="Order!.ShippingAddress" type="text" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">
+                                        <label>Ciudad</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input id="cityId" asp-for="Order!.City" type="text" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">
+                                        <label>Pais</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input id="countryId" asp-for="Order!.Country" type="text" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-5 offset-lg-1">
+                                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="text-success">Productos:</span>
+                                </h4>
+                                <ul class="list-group mb-3">
+                                    @foreach (var item in Model.ShopingCartList)
+                                    {
+                                        <li class="list-group-item d-flex justify-content-between">
+                                            <div>
+                                                <h6 class="my-0">@item.Products!.Description</h6>
+                                                <small class="text-muted">Cantidad: @item.Quantity</small>
+                                            </div>
+                                            <span class="text-muted">$ @(item.Products.Price * item.Quantity)</span>
+                                        </li>
+                                    }
+
+                                    <li class="list-group-item d-flex justify-content-between bg-light">
+                                        <strong class="text-success">Total (USD)</strong>
+                                        <strong class="text-success">$@(Model.Order.TotalOrderAmount)</strong>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-12 col-md-8 pt-2">
+                            <p class="text-success">Fecha Estimada de Envío: @DateTime.Now.AddDays(7).ToShortDateString() - @DateTime.Now.AddDays(14).ToShortDateString()</p>
+                        </div>
+                        <div class="col-12 col-md-4">
+
+                            <button id="btnCheckout" type="submit" value="Realizar Pedido" class="btn btn-success form-control">Realizar Pedido</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12  p-0">
+        <h3 class="text-success text-center"><i class="bi bi-cart-check-fill"></i></h3>
+    </div>
+    <div class="col-12 p-1">
+        <div class="text-center border-0">
+            <a asp-area="Inventory" asp-controller="ShoppingCart" asp-action="Index" class="btn btn-outline-success ">Regresar al Carro</a>
+        </div>
+
+    </div>
+</form>
+
+@section Scripts{
+    <script src="~/js/shoppinCartFunctions.js" ></script>
+}

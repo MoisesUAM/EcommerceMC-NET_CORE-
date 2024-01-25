@@ -24,6 +24,7 @@ namespace Ecommerce.DAL.Configuration
             builder.Property(x => x.City).IsRequired(false);
             builder.Property(x => x.Country).IsRequired(false);
             builder.Property(x => x.PhoneNumber).IsRequired(false);
+            builder.Property(x => x.SessionId).IsRequired(false);
 
             //navegacion
 

@@ -15,8 +15,8 @@ namespace Ecommerce.BLL.Utilities
         {
             _config = configLocal;
             //Nombre y clave de Api Key
-            var _ApiName = _config.GetValue<string>("ElasticAPI_Key");
-            var _ApiKey = _config.GetValue<string>("Secret_Key");
+            var _ApiName = _config.GetValue<string>("ElasticAPI:ElasticAPI_Key");
+            var _ApiKey = _config.GetValue<string>("ElasticAPI:Secret_Key");
         }
 
 

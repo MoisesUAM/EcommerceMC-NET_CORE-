@@ -1,0 +1,35 @@
+﻿@model int
+@using Ecommerce.BLL.Notifications
+
+@{
+    ViewData["Title"] = "Confirmacion de Pedido";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center text-info fw-bold">@ViewData["Title"]</h2>
+        </div>
+    </div>
+</div>
+<hr class="text-danger" />
+<div class="container row">
+    <div class="col-12 text-center">
+        <h1 class="text-primary text-center">Orden Procesada Correctamente</h1><br />
+        <img src="~/images/main/confirmacion.jpg" width="50%" />
+    </div>
+    <div class="col-12 text-center" style="color:maroon">
+        <br />
+        Gracias Por tu Orden! <br />
+        Hemos recibido tu Orden y Nosotros te enviaremos un email pronto!
+        <br />
+        Tu numero de Orden es : @Model
+
+        <div class="text-center">
+            <a asp-area="Inventory" asp-controller="Home" asp-action="Index" class="btn btn-success">Salir</a>
+        </div>
+
+    </div>
+
+</div>
