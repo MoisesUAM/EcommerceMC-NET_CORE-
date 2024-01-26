@@ -1,0 +1,69 @@
+﻿@{
+    ViewData["Title"] = "Administracion de Pedidos";
+    var status = Context.Request.Query["status"];
+    var approved = "text-primary";
+    var completed = "text-primary";
+    var all = "text-primary";
+
+    switch (status)
+    {
+        case "approved":
+            approved = "active text-white";
+            break;
+        case "completed":
+            completed = "active text-white";
+            break;
+        default :
+            all = "active text-white";
+            break;
+    }
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center text-info fw-bold">@ViewData["Title"]</h2>
+        </div>
+    </div>
+</div>
+<hr class="text-danger" />
+<div class="border p-3">
+    <div class="d-lg-flex justify-content-between mb-3">
+        <div class="p-2">
+            <h2 class="text-primary">Lista de Ordenes</h2>
+            <hr class="text-success" />
+        </div>
+        <div class="p-2">
+            <ul class="list-group list-group-horizontal-sm gap-1">
+                <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="approved">
+                <li class="list-group-item @approved">Aprobados</li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="completed">
+                <li class="list-group-item @completed">Completados</li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="all">
+                <li class="list-group-item @all">Todas</li>
+                </a>
+            </ul>
+        </div>
+    </div>
+    <br /><br />
+    <table id="tblDatos" class="table table-responsive table-hover display nowrap" style="width:100%">
+        <thead class="table-dark">
+            <tr>
+                <th>Id</th>
+                <th>Cliente</th>
+                <th>Telefono</th>
+                <th>Email</th>
+                <th>Estado</th>
+                <th>Monto</th>
+                <th></th>
+            </tr>
+        </thead>
+    </table>
+
+</div>
+
+@section Scripts {
+    <script src="~/js/OrderFunctions.js"></script>
+}

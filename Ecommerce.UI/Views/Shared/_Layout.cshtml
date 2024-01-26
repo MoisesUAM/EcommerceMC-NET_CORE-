@@ -45,7 +45,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Inventory" asp-controller="Test" asp-action="Index">Vista de Pruebas</a>
                         </li>
-                        @if(User.IsInRole(DS.AdminRole) || User.IsInRole(DS.EmployeeRole))
+                        @if (User.IsInRole(DS.AdminRole) || User.IsInRole(DS.EmployeeRole) || User.IsInRole(DS.ClientRole))
                         {
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -66,6 +66,7 @@
                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Transacciones</a>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item text-primary" asp-area="Inventory" asp-controller="Inventory" asp-action="Index"><i class="bi bi-box-arrow-up"></i> Crear Existencias</a></li>
+                                    <li><a class="dropdown-item text-primary" asp-area="Admin" asp-controller="Order" asp-action="Index"><i class="bi bi-truck"></i> Ordenes de Pedido</a></li>
                                 </ul>
                             </li>
                         }
