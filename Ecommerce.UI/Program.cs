@@ -2,6 +2,7 @@ using Ecommerce.BLL.Utilities;
 using Ecommerce.BLL.Utilities.Implementations;
 using Ecommerce.BLL.Utilities.Interfaces;
 using Ecommerce.DAL.Data;
+using Ecommerce.DAL.InitConfiguration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IUnitWork, UnitWorkImpl>();
+builder.Services.AddScoped<IDbInitializer, DbInitializerImpl>();
 builder.Services.AddSingleton<IEmailSender, EmailSender>();
 builder.Services.AddSession(options =>
 {
@@ -62,6 +64,23 @@ app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
 
+//Aplicar migraciones y datos iniciales
+using(var scope = app.Services.CreateScope())
+{
+    var service = scope.ServiceProvider;
+    var loggerFactory = service.GetRequiredService<ILoggerFactory>();
+
+    try
+    {
+        var init = service.GetRequiredService<IDbInitializer>();
+        init.Initialize();
+    }
+    catch (Exception e)
+    {
+        var logger = loggerFactory.CreateLogger<Program>();
+        logger.LogError(e, "Ocurrio un error al ejecutar las migraciones y datos iniciales");
+    }
+}
 
 app.MapControllerRoute(
     name: "areas",
